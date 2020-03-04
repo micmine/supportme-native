@@ -17,13 +17,10 @@ public class LoginEventHandler implements EventHandler<ActionEvent> {
 
 		String username = usernameField.getCharacters().toString();
 		String password = passwordField.getCharacters().toString();
-
-		if (username.equals("asd") && password.equals("asd")) {
-			SceneManager.getInstance().select("main");
-		} else {
-			System.out.println("Wrong credentials");
-		}
 		
+		System.out.println(username + password);
+
+		Auth.getInstance().login(username, password);
 		
 
 	}

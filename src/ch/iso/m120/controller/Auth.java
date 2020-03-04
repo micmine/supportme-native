@@ -1,9 +1,17 @@
 package ch.iso.m120.controller;
 
-import ch.iso.m120.model.Person;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 
-public class Auth {
+import ch.iso.m120.model.Person;
+import ch.iso.m120.model.PersonCredentials;
+import ch.iso.m120.model.database.Database;
+import ch.iso.m120.model.database.DatabaseHelper;
+
+public final class Auth {
 	private static volatile Auth instance;
+	private boolean loggedIn = false;
 
 	private Auth() {
 	}
@@ -18,10 +26,65 @@ public class Auth {
 		}
 		return instance;
 	}
+
+	public void login(String username, String password) {
+		try {
+			int id = this.getId(username);
+
+			String query = "select password from personcredentials where id = " + id + " limit 1;";
+			Statement stmt = Database.getDatabaseConnection().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			if (rs.next() != false) {
+
+				String databasePassword = rs.getString("password");
+
+				rs.close();
+				stmt.close();
+
+				if (password.equals(databasePassword)) {
+					this.loggedIn = true;
+					SceneManager.getInstance().select("main");
+				} else {
+					this.loggedIn = false;
+					SceneManager.getInstance().select("login");
+				}
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 	
-	public static Person login(String username, String password) {
+	public void register(String username, String email, String password) {
+		DatabaseHelper databaseHelper = new DatabaseHelper();
 		
-		return null;
+		int id = 0;
+		
+		Person person = new Person(id, username, email);
+		PersonCredentials credentials = new PersonCredentials(id, password);
+		
+		databaseHelper.save(person);
+		databaseHelper.save(credentials);
+	}
+
+	private int getId(String username) {
+		try {
+			String query = "select id from person where name = '" + username + "' limit 1";
+			Statement stmt;
+			stmt = Database.getDatabaseConnection().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+			int id = 0;
+			while (rs.next()) {
+				id = rs.getInt("id");
+			}
+			rs.close();
+			stmt.close();
+			return id;
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 }

@@ -17,10 +17,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage stage) {
 		try {
-			DatabaseHelper databaseHelper = new DatabaseHelper();
-			
-			databaseHelper.save(new Person(1, "micmine", "micmine4@gmail.com"));
-			/*
 			Scene scene = new Scene(new Pane(), 400, 400);
 			SceneManager manager = SceneManager.getInstance(scene);
 			
@@ -32,7 +28,7 @@ public class Main extends Application {
 			stage.setTitle("supportme-native");
 			stage.setScene(scene);
 			stage.show(); 
-			*/
+			
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

@@ -18,18 +18,17 @@ public class DatabaseHelper {
 			Statement stmt = Database.getDatabaseConnection().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
-			
+
 			HashMap<String, String> newObject = new HashMap<>();
 			Field[] fields = type.getDeclaredFields();
 			for (Field field : fields) {
 				newObject.put(field.getName(), rs.getString(field.getName()));
 			}
-			
+
 			rs.close();
 			stmt.close();
 			return newObject;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
@@ -60,10 +59,32 @@ public class DatabaseHelper {
 			return objects;
 
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;
+	}
+
+	public <T> int getNextId(Class<T> type) {
+		try {
+			String tableName = type.getSimpleName().toLowerCase();
+			String query = "select id form " + tableName + "order by desc limit 1";
+
+			Statement stmt = Database.getDatabaseConnection().createStatement();
+			ResultSet rs = stmt.executeQuery(query);
+
+			while (rs.next()) {
+
+				rs.getInt("id");
+
+			}
+
+			rs.close();
+			stmt.close();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return 0;
 	}
 
 	public <T> void save(Object object) {
@@ -72,7 +93,6 @@ public class DatabaseHelper {
 		try {
 			id = ((SimpleIntegerProperty) object.getClass().getField("id").get(object)).intValue();
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		if (this.exists(id, object.getClass())) {
@@ -80,22 +100,22 @@ public class DatabaseHelper {
 		} else {
 			query = this.getInsetQuery(object);
 		}
-		
+
 		System.out.println(query);
 	}
-	
+
 	private <T> boolean exists(int id, Class<T> type) {
 		String tableName = type.getSimpleName().toLowerCase();
-		
+
 		String query = "select count(*) from " + tableName + " where id = " + id;
 		try {
-			
+
 			Statement stmt = Database.getDatabaseConnection().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			rs.next();
-			
+
 			int count = rs.getInt("count");
-			
+
 			rs.close();
 			stmt.close();
 
@@ -105,7 +125,6 @@ public class DatabaseHelper {
 				return false;
 			}
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return false;
@@ -148,7 +167,6 @@ public class DatabaseHelper {
 				}
 
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
@@ -156,7 +174,7 @@ public class DatabaseHelper {
 		query = query + ");";
 		return query;
 	}
-	
+
 	private <T> String getUpdateQuery(Object object) {
 		Class<T> objectClass = (Class<T>) object.getClass();
 		String tableName = objectClass.getSimpleName().toLowerCase();
@@ -187,15 +205,14 @@ public class DatabaseHelper {
 				}
 
 			} catch (IllegalArgumentException | IllegalAccessException e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
 		}
 
 		try {
-			query = query + " where id = " + ((SimpleIntegerProperty) objectClass.getField("id").get(object)).intValue() + ";";
+			query = query + " where id = " + ((SimpleIntegerProperty) objectClass.getField("id").get(object)).intValue()
+					+ ";";
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return query;
