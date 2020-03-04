@@ -1,5 +1,6 @@
 package ch.iso.m120.model;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import javafx.beans.property.SimpleIntegerProperty;
@@ -22,6 +23,15 @@ public class Person {
 		this.id.set(Integer.parseInt(map.get("id")));
 		this.name.set(map.get("name"));
 		this.email.set(map.get("email"));
+	}
+	
+	public static ArrayList<Person> fromList(ArrayList<HashMap<String, String>> list) {
+		ArrayList<Person> out = new ArrayList<>();
+		for (HashMap<String, String> hashMap : list) {
+			Person person = new Person(hashMap);
+			out.add(person);
+		}
+		return out;
 	}
 
 	public SimpleIntegerProperty idProperty() {

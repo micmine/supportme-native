@@ -4,7 +4,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+import java.util.ArrayList;
 
+import ch.iso.m120.model.database.Database;
+import ch.iso.m120.model.database.DatabaseHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -32,30 +35,12 @@ public class PersonObservableList {
 	}
 
 	public static void loadData() {
-		try {
-			Class.forName("org.postgresql.Driver");
-
-			Connection conn = DriverManager.getConnection(connectionString, connectionUser, connectionPassword);
-
-			Statement stmt = conn.createStatement();
-
-			ResultSet rs = stmt.executeQuery(
-					"select * from person;");
-
-			while (rs.next()) {
-				int id = rs.getInt("id");
-				String name = rs.getString("name");
-				String email = rs.getString("email");
-
-				data.add(new Person(id, name, email));
-			}
-
-			rs.close();
-			stmt.close();
-			conn.close();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		DatabaseHelper databaseHelper = new DatabaseHelper();
+		
+		ArrayList<Person> persons = Person.fromList(databaseHelper.selectMany("select * from person", Person.class));
+		
+		for (Person person : persons) {
+			data.add(person);
 		}
 
 	}
