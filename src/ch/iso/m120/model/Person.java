@@ -8,9 +8,9 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Person {
 
-	private SimpleIntegerProperty id = new SimpleIntegerProperty();
-	private SimpleStringProperty name = new SimpleStringProperty();
-	private SimpleStringProperty email = new SimpleStringProperty();
+	public SimpleIntegerProperty id = new SimpleIntegerProperty();
+	public SimpleStringProperty name = new SimpleStringProperty();
+	public SimpleStringProperty email = new SimpleStringProperty();
 
 	public Person(Integer id, String name, String email) {
 		super();

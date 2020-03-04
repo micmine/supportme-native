@@ -1,11 +1,9 @@
 package ch.iso.m120.view;
 
-import ch.iso.m120.controller.LoginEventHandler;
 import ch.iso.m120.controller.RegisterEventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
