@@ -16,19 +16,22 @@ public class Main extends Application {
 
 	@Override
 	public void start(Stage stage) {
+	  //System.out.println(new DatabaseHelper().getNextId(Person.class));
+	  //Person person = new Person(new DatabaseHelper().getNextId(Person.class), "felix", "felix@gmail.com");
 		try {
+
 			Scene scene = new Scene(new Pane(), 400, 400);
 			SceneManager manager = SceneManager.getInstance(scene);
-			
+
 			manager.load();
-			
+
 			manager.select("login");
 			//scene.getStylesheets().add(getClass().getResource("css/application.css").toExternalForm());
 
 			stage.setTitle("supportme-native");
 			stage.setScene(scene);
-			stage.show(); 
-			
+			stage.show();
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

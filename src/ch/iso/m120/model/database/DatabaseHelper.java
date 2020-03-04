@@ -67,15 +67,13 @@ public class DatabaseHelper {
 	public <T> int getNextId(Class<T> type) {
 		try {
 			String tableName = type.getSimpleName().toLowerCase();
-			String query = "select id form " + tableName + "order by desc limit 1";
+			String query = "select id from " + tableName + " order by id desc limit 1;";
 
 			Statement stmt = Database.getDatabaseConnection().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
-
-				rs.getInt("id");
-
+				return rs.getInt("id") + 1;
 			}
 
 			rs.close();
@@ -86,6 +84,10 @@ public class DatabaseHelper {
 		}
 		return 0;
 	}
+
+	public String getTableName(Object object) {
+      return object.getClass().getSimpleName().toLowerCase();
+    }
 
 	public <T> void save(Object object) {
 		String query = "";
@@ -101,10 +103,20 @@ public class DatabaseHelper {
 			query = this.getInsetQuery(object);
 		}
 
+		try {
+          Statement stmt = Database.getDatabaseConnection().createStatement();
+          ResultSet rs = stmt.executeQuery(query);
+          System.out.println(rs.next());
+          rs.close();
+          stmt.close();
+      } catch (SQLException e) {
+          e.printStackTrace();
+      }
+
 		System.out.println(query);
 	}
 
-	private <T> boolean exists(int id, Class<T> type) {
+	public <T> boolean exists(int id, Class<T> type) {
 		String tableName = type.getSimpleName().toLowerCase();
 
 		String query = "select count(*) from " + tableName + " where id = " + id;

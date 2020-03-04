@@ -36,9 +36,9 @@ public class PersonObservableList {
 
 	public static void loadData() {
 		DatabaseHelper databaseHelper = new DatabaseHelper();
-		
-		ArrayList<Person> persons = Person.fromList(databaseHelper.selectMany("select * from person", Person.class));
-		
+
+		ArrayList<Person> persons = Person.all();
+
 		for (Person person : persons) {
 			data.add(person);
 		}
@@ -76,7 +76,7 @@ public class PersonObservableList {
 						+ "'" + person.getFirstname() + "');");
 			}
 			stmt.close();
-			
+
 			*/
 
 			conn.commit();
