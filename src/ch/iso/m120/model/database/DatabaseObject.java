@@ -14,7 +14,7 @@ public class DatabaseObject {
 
   public void save() {
     DatabaseHelper databaseHelper = new DatabaseHelper();
-
+    // test
     databaseHelper.save(this);
   }
 
