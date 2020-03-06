@@ -24,10 +24,4 @@ public class DatabaseObject {
     return databaseHelper.getTableName(this);
   }
 
-  public static ArrayList<Person> all() {
-    DatabaseHelper databaseHelper = new DatabaseHelper();
-    ArrayList<Person> persons = Person.fromList(databaseHelper.selectMany("select * from " + new Person().getTableName(), Person.class));
-    return persons;
-  }
-
 }

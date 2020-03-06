@@ -23,6 +23,11 @@ public class RegisterEventHandler implements EventHandler<ActionEvent> {
 		String password2 = password2Field.getCharacters().toString();
 
 		System.out.println(username + " " + email + " " + password + " " + password2);
+		username = "hans@wurst.ch";
+		email = "hans@wurst.ch";
+		password = "hans@wurst.ch";
+
+		Auth.getInstance().register(username, email, password);
 
 	}
 

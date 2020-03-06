@@ -1,13 +1,14 @@
 package ch.iso.m120.model;
 
+import ch.iso.m120.model.database.DatabaseObject;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class PersonCredentials {
-	
-	private SimpleIntegerProperty id = new SimpleIntegerProperty();
-	private SimpleStringProperty password = new SimpleStringProperty();
-	
+public class PersonCredentials extends DatabaseObject {
+
+	public SimpleIntegerProperty id = new SimpleIntegerProperty();
+	public SimpleStringProperty password = new SimpleStringProperty();
+
 	public PersonCredentials(Integer id, String password) {
 		super();
 		this.id.set(id);
@@ -17,7 +18,7 @@ public class PersonCredentials {
 	public SimpleIntegerProperty idProperty() {
 		return id;
 	}
-	
+
 	public Integer getId() {
 		return idProperty().get();
 	}
@@ -29,7 +30,7 @@ public class PersonCredentials {
 	public SimpleStringProperty passwordProperty() {
 		return password;
 	}
-	
+
 	public String getPassword() {
 		return passwordProperty().get();
 	}

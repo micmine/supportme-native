@@ -2,78 +2,86 @@ package ch.iso.m120.model;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import ch.iso.m120.model.database.DatabaseHelper;
 import ch.iso.m120.model.database.DatabaseObject;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Person extends DatabaseObject{
+public class Person extends DatabaseObject {
 
-	public SimpleIntegerProperty id = new SimpleIntegerProperty();
-	public SimpleStringProperty name = new SimpleStringProperty();
-	public SimpleStringProperty email = new SimpleStringProperty();
+  public SimpleIntegerProperty id = new SimpleIntegerProperty();
+  public SimpleStringProperty name = new SimpleStringProperty();
+  public SimpleStringProperty email = new SimpleStringProperty();
 
-	public Person(Integer id, String name, String email) {
-		super();
-		this.id.set(id);
-		this.name.set(name);
-		this.email.set(email);
-	}
+  public Person(Integer id, String name, String email) {
+    super();
+    this.setId(id);
+    this.setName(name);;
+    this.setEmail(email);;
+  }
 
-	public Person(HashMap<String, String> map) {
-		this.id.set(Integer.parseInt(map.get("id")));
-		this.name.set(map.get("name"));
-		this.email.set(map.get("email"));
-	}
+  public Person(HashMap<String, String> map) {
+    this.id.set(Integer.parseInt(map.get("id")));
+    this.name.set(map.get("name"));
+    this.email.set(map.get("email"));
+  }
 
-	public Person() {}
+  public Person() {}
 
   public static ArrayList<Person> fromList(ArrayList<HashMap<String, String>> list) {
-		ArrayList<Person> out = new ArrayList<>();
-		for (HashMap<String, String> hashMap : list) {
-			Person person = new Person(hashMap);
-			out.add(person);
-		}
-		return out;
-	}
+    ArrayList<Person> out = new ArrayList<>();
+    for (HashMap<String, String> hashMap : list) {
+      Person person = new Person(hashMap);
+      out.add(person);
+    }
+    return out;
+  }
 
-	public SimpleIntegerProperty idProperty() {
-		return id;
-	}
+  public static ArrayList<Person> all() {
+    DatabaseHelper databaseHelper = new DatabaseHelper();
+    ArrayList<Person> persons = Person.fromList(databaseHelper.selectMany("select * from " + new Person().getTableName(), Person.class));
+    return persons;
+  }
 
-	public Integer getId() {
-		return idProperty().get();
-	}
+  public static Person find(int id) {
+    return new Person(new DatabaseHelper().find(id, new Person()));
+  }
 
-	private void setId(Integer id) {
-		idProperty().set(id);
-		this.save();
-	}
+  public SimpleIntegerProperty idProperty() {
+    return id;
+  }
 
-	public SimpleStringProperty nameProperty() {
-		return name;
-	}
+  public Integer getId() {
+    return idProperty().get();
+  }
 
-	public String getName() {
-		return nameProperty().get();
-	}
+  private void setId(Integer id) {
+    idProperty().set(id);
+  }
 
-	public void setName(String name) {
-		nameProperty().set(name);
-		this.save();
-	}
+  public SimpleStringProperty nameProperty() {
+    return name;
+  }
 
-	public SimpleStringProperty emailProperty() {
-		return email;
-	}
+  public String getName() {
+    return nameProperty().get();
+  }
 
-	public String getEmail() {
-		return emailProperty().get();
-	}
+  public void setName(String name) {
+    nameProperty().set(name);
+  }
 
-	public void setEmail(String email) {
-		emailProperty().set(email);
-		this.save();
-	}
+  public SimpleStringProperty emailProperty() {
+    return email;
+  }
+
+  public String getEmail() {
+    return emailProperty().get();
+  }
+
+  public void setEmail(String email) {
+    emailProperty().set(email);
+  }
 
 
 }

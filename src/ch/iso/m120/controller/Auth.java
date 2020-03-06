@@ -13,6 +13,8 @@ public final class Auth {
 	private static volatile Auth instance;
 	private boolean loggedIn = false;
 
+	private Person person;
+
 	private Auth() {
 	}
 
@@ -36,7 +38,6 @@ public final class Auth {
 			ResultSet rs = stmt.executeQuery(query);
 
 			if (rs.next() != false) {
-
 				String databasePassword = rs.getString("password");
 
 				rs.close();
@@ -44,6 +45,7 @@ public final class Auth {
 
 				if (password.equals(databasePassword)) {
 					this.loggedIn = true;
+					this.person = new Person().find(id);
 					SceneManager.getInstance().select("main");
 				} else {
 					this.loggedIn = false;
@@ -54,15 +56,18 @@ public final class Auth {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void register(String username, String email, String password) {
 		DatabaseHelper databaseHelper = new DatabaseHelper();
-		
-		int id = 0;
-		
+
+		int id = new DatabaseHelper().getNextId(Person.class);
+
 		Person person = new Person(id, username, email);
+		person.save();
+
 		PersonCredentials credentials = new PersonCredentials(id, password);
-		
+		credentials.save();
+
 		databaseHelper.save(person);
 		databaseHelper.save(credentials);
 	}

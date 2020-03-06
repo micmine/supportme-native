@@ -18,6 +18,8 @@ public class Main extends Application {
 	public void start(Stage stage) {
 	  //System.out.println(new DatabaseHelper().getNextId(Person.class));
 	  //Person person = new Person(new DatabaseHelper().getNextId(Person.class), "felix", "felix@gmail.com");
+	  //System.out.println(new Person(new DatabaseHelper().find(1, new Person())).getName());
+
 		try {
 
 			Scene scene = new Scene(new Pane(), 400, 400);
@@ -35,6 +37,7 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+
 	}
 
 }

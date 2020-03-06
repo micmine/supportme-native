@@ -1,6 +1,9 @@
 package ch.iso.m120.view;
 
 import ch.iso.m120.controller.LoginEventHandler;
+import ch.iso.m120.controller.SceneManager;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
@@ -32,6 +35,18 @@ public class LoginView extends VBox {
 		submit.setPadding(new Insets(5, 50, 5, 50));
 		this.getChildren().add(submit);
 		submit.setOnAction(new LoginEventHandler());
+
+		Button switchToRegister = new Button("Switch to Register");
+		switchToRegister.setPadding(new Insets(5, 50, 5, 50));
+        this.getChildren().add(switchToRegister);
+        switchToRegister.setOnAction(new EventHandler<ActionEvent>() {
+
+          @Override
+          public void handle(ActionEvent event) {
+            SceneManager.getInstance().select("register");
+          }
+        });
+
 	}
 
 }
