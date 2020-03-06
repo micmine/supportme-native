@@ -1,7 +1,6 @@
 package ch.iso.m120.model.database;
 
 import java.lang.reflect.Field;
-import java.lang.reflect.Modifier;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -165,6 +164,7 @@ public class DatabaseHelper {
     return false;
   }
 
+  @SuppressWarnings("unchecked")
   private <T> String getInsetQuery(Object object) {
     Class<T> objectClass = (Class<T>) object.getClass();
     String tableName = objectClass.getSimpleName().toLowerCase();
@@ -210,6 +210,7 @@ public class DatabaseHelper {
     return query;
   }
 
+  @SuppressWarnings("unchecked")
   private <T> String getUpdateQuery(Object object) {
     Class<T> objectClass = (Class<T>) object.getClass();
     String tableName = objectClass.getSimpleName().toLowerCase();

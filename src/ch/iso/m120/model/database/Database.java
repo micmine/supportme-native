@@ -2,15 +2,11 @@ package ch.iso.m120.model.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
-
-import ch.iso.m120.model.Person;
 
 public class Database {
-	
+
 	private static volatile Database instance;
-	
+
 	private static String connectionString = "jdbc:postgresql://localhost/supportme?allowPublicKeyRetrieval=true&useSSL=false";
 	private static String connectionUser = "postgres";
 	private static String connectionPassword = "pass";
@@ -28,7 +24,7 @@ public class Database {
 		}
 		return instance;
 	}
-	
+
 	public static Connection getDatabaseConnection() {
 		try {
 			Class.forName("org.postgresql.Driver");

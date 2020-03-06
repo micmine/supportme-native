@@ -6,10 +6,6 @@
  */
 package ch.iso.m120.model.database;
 
-import java.util.ArrayList;
-import javax.xml.namespace.QName;
-import ch.iso.m120.model.Person;
-
 public class DatabaseObject {
 
   public void save() {

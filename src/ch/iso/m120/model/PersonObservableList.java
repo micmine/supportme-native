@@ -2,12 +2,7 @@ package ch.iso.m120.model;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.util.ArrayList;
-
-import ch.iso.m120.model.database.Database;
-import ch.iso.m120.model.database.DatabaseHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -35,8 +30,6 @@ public class PersonObservableList {
 	}
 
 	public static void loadData() {
-		DatabaseHelper databaseHelper = new DatabaseHelper();
-
 		ArrayList<Person> persons = Person.all();
 
 		for (Person person : persons) {
