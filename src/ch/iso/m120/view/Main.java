@@ -24,8 +24,9 @@ public class Main extends Application {
 
 			Scene scene = new Scene(new Pane(), 400, 400);
 			SceneManager manager = SceneManager.getInstance(scene);
+			manager.loadAuth();
 
-			manager.load();
+			//manager.load();
 
 			manager.select("login");
 			//scene.getStylesheets().add(getClass().getResource("css/application.css").toExternalForm());

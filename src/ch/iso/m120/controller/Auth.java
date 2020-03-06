@@ -46,6 +46,7 @@ public final class Auth {
 				if (password.equals(databasePassword)) {
 					this.loggedIn = true;
 					this.person = new Person().find(id);
+					SceneManager.getInstance().load();
 					SceneManager.getInstance().select("main");
 				} else {
 					this.loggedIn = false;
@@ -70,6 +71,11 @@ public final class Auth {
 
 		databaseHelper.save(person);
 		databaseHelper.save(credentials);
+
+		this.loggedIn = true;
+        this.person = new Person().find(id);
+        SceneManager.getInstance().load();
+        SceneManager.getInstance().select("main");
 	}
 
 	private int getId(String username) {

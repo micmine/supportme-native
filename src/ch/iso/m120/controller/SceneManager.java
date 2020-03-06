@@ -12,25 +12,25 @@ import javafx.scene.layout.VBox;
 
 public final class SceneManager {
 	private static SceneManager instance;
-	
+
 	private HashMap<String, Pane> screenMap = new HashMap<>();
 	private Scene main;
 
-	
+
 	public static SceneManager getInstance() {
         if(instance == null) {
         	instance = new SceneManager();
         }
-         
+
         return instance;
     }
-	
+
 	public static SceneManager getInstance(Scene main) {
         if(instance == null) {
         	instance = new SceneManager();
         	instance.main = main;
         }
-         
+
         return instance;
     }
 
@@ -47,19 +47,19 @@ public final class SceneManager {
 		main.setRoot(pane);
 	}
 
+	public void loadAuth() {
+	  VBox login = new LoginView();
+      this.add("login", login);
+
+      VBox register = new RegisterView();
+      this.add("register", register);
+	}
+
 	public void load() {
-		SceneManager manager = SceneManager.getInstance();
-		
 		SplitPane mainContent = new MainSplit();
 		Pane main = new Pane();
 		main.getChildren().add(mainContent);
-		manager.add("main", main);	
-		
-		VBox login = new LoginView();
-		manager.add("login", login);
-		
-		VBox register = new RegisterView();
-		manager.add("register", register);	
+		this.add("main", main);
 	}
 
 }
