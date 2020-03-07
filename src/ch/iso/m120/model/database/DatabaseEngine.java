@@ -265,11 +265,11 @@ public class DatabaseEngine {
     try {
       for (Field field : fields) {
         field.setAccessible(true);
-        String fieldType = field.getType().getSimpleName().toLowerCase();
+        Object fieldType = field.get(object);
         String name = field.getName();
-        if (fieldType.contains("int")) {
+        if (fieldType instanceof SimpleIntegerProperty) {
           field.set(object, new SimpleIntegerProperty(Integer.parseInt(map.get(name))));
-        } else if (fieldType.contains("string")) {
+        } else if (fieldType instanceof SimpleStringProperty) {
           field.set(object, new SimpleStringProperty(map.get(name)));
         }
       }
