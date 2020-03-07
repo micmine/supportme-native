@@ -127,9 +127,7 @@ public class DatabaseHelper {
 
     try {
       Statement stmt = Database.getDatabaseConnection().createStatement();
-      ResultSet rs = stmt.executeQuery(query);
-      System.out.println(rs.next());
-      rs.close();
+      stmt.executeUpdate(query);
       stmt.close();
     } catch (SQLException e) {
       e.printStackTrace();
