@@ -24,7 +24,7 @@ public class PersonObservableList {
   }
 
   public static void loadData() {
-    ArrayList<Person> persons = new DatabaseEngine().all(Person.class);
+    ArrayList<Person> persons = DatabaseEngine.getInstance().all(Person.class);
 
     for (Person person : persons) {
       data.add(person);

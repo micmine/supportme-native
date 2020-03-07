@@ -29,7 +29,6 @@ public final class Auth {
 
   public void login(String username, String password) {
     try {
-      DatabaseEngine databaseHelper = new DatabaseEngine();
       int id = this.getId(username);
 
       String query = "select password from personcredentials where id = " + id + " limit 1;";
@@ -44,7 +43,7 @@ public final class Auth {
 
         if (password.equals(databasePassword)) {
           this.loggedIn = true;
-          this.person = databaseHelper.find(Person.class, id);
+          this.person = DatabaseEngine.getInstance().find(Person.class, id);
           SceneManager.getInstance().load();
           SceneManager.getInstance().select("main");
         } else {
@@ -58,18 +57,16 @@ public final class Auth {
   }
 
   public void register(String username, String email, String password) {
-    DatabaseEngine databaseHelper = new DatabaseEngine();
-
-    int id = new DatabaseEngine().getNextId(Person.class);
+    int id = DatabaseEngine.getInstance().getNextId(Person.class);
 
     Person person = new Person(id, username, email);
-    databaseHelper.save(person);
+    DatabaseEngine.getInstance().save(person);
 
     PersonCredentials credentials = new PersonCredentials(id, password);
-    databaseHelper.save(credentials);
+    DatabaseEngine.getInstance().save(credentials);
 
     this.loggedIn = true;
-    this.person = databaseHelper.find(Person.class, id);
+    this.person = DatabaseEngine.getInstance().find(Person.class, id);
     SceneManager.getInstance().load();
     SceneManager.getInstance().select("main");
   }

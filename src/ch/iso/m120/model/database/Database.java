@@ -2,6 +2,8 @@ package ch.iso.m120.model.database;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
 
 public class Database {
 
@@ -38,5 +40,25 @@ public class Database {
       e.printStackTrace();
     }
     return null;
+  }
+
+  public void close(Statement stmt) {
+    if (stmt != null) {
+      try {
+        stmt.close();
+      } catch (Exception e) {
+        // nop
+      }
+    }
+  }
+
+  public void close(ResultSet rs) {
+    if (rs != null) {
+      try {
+        rs.close();
+      } catch (Exception e) {
+        // nop
+      }
+    }
   }
 }

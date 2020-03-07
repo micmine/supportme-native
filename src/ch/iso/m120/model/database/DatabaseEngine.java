@@ -12,12 +12,29 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class DatabaseEngine {
 
+  private static volatile DatabaseEngine instance;
+
+  private DatabaseEngine() {}
+
+  public static DatabaseEngine getInstance() {
+    if (instance == null) {
+      synchronized (Database.class) {
+        if (instance == null) {
+          instance = new DatabaseEngine();
+        }
+      }
+    }
+    return instance;
+  }
+
   public <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
+    Statement stmt = null;
+    ResultSet rs = null;
 
     try {
       System.out.println(query);
-      Statement stmt = Database.getDatabaseConnection().createStatement();
-      ResultSet rs = stmt.executeQuery(query);
+      stmt = Database.getDatabaseConnection().createStatement();
+      rs = stmt.executeQuery(query);
       rs.next();
 
       HashMap<String, String> newObject = new HashMap<>();
@@ -28,20 +45,28 @@ public class DatabaseEngine {
       }
 
       rs.close();
+      rs = null;
       stmt.close();
+      stmt = null;
       return newObject;
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      Database.getInstance().close(rs);
+      Database.getInstance().close(stmt);
     }
+
     return null;
   }
 
   public <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> type) {
+    Statement stmt = null;
+    ResultSet rs = null;
     try {
       String query = "select * from " + getTableName(type) + " where id = " + id + ";";
       System.out.println(query);
-      Statement stmt = Database.getDatabaseConnection().createStatement();
-      ResultSet rs = stmt.executeQuery(query);
+      stmt = Database.getDatabaseConnection().createStatement();
+      rs = stmt.executeQuery(query);
       rs.next();
 
       HashMap<String, String> newObject = new HashMap<>();
@@ -52,25 +77,31 @@ public class DatabaseEngine {
       }
 
       rs.close();
+      rs = null;
       stmt.close();
+      stmt = null;
       return newObject;
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      Database.getInstance().close(rs);
+      Database.getInstance().close(stmt);
     }
     return null;
   }
 
   public ArrayList<HashMap<String, String>> selectMany(String query,
       Class<? extends DatabaseObject> type) {
+    Statement stmt = null;
+    ResultSet rs = null;
     try {
       ArrayList<HashMap<String, String>> objects = new ArrayList<>();
 
       System.out.println(query);
-      Statement stmt = Database.getDatabaseConnection().createStatement();
-      ResultSet rs = stmt.executeQuery(query);
+      stmt = Database.getDatabaseConnection().createStatement();
+      rs = stmt.executeQuery(query);
 
       while (rs.next()) {
-
         HashMap<String, String> newObject = new HashMap<>();
         Field[] fields = type.getDeclaredFields();
         for (Field field : fields) {
@@ -82,32 +113,44 @@ public class DatabaseEngine {
       }
 
       rs.close();
+      rs = null;
       stmt.close();
+      stmt = null;
 
       return objects;
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      Database.getInstance().close(rs);
+      Database.getInstance().close(stmt);
     }
     return null;
   }
 
   public int getNextId(Class<? extends DatabaseObject> type) {
+    Statement stmt = null;
+    ResultSet rs = null;
     try {
       String tableName = type.getSimpleName().toLowerCase();
       String query = "select max(id) as id from " + tableName;
       System.out.println(query);
 
-      Statement stmt = Database.getDatabaseConnection().createStatement();
-      ResultSet rs = stmt.executeQuery(query);
+      stmt = Database.getDatabaseConnection().createStatement();
+      rs = stmt.executeQuery(query);
 
       while (rs.next()) {
         return rs.getInt("id") + 1;
       }
 
       rs.close();
+      rs = null;
       stmt.close();
+      stmt = null;
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      Database.getInstance().close(rs);
+      Database.getInstance().close(stmt);
     }
     return 0;
   }
@@ -157,6 +200,7 @@ public class DatabaseEngine {
   }
 
   public void save(DatabaseObject object) {
+    Statement stmt = null;
     String query = "";
     int id = 0;
     try {
@@ -172,28 +216,36 @@ public class DatabaseEngine {
     }
 
     try {
-      Statement stmt = Database.getDatabaseConnection().createStatement();
+      stmt = Database.getDatabaseConnection().createStatement();
       stmt.executeUpdate(query);
       stmt.close();
+      stmt = null;
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      Database.getInstance().close(stmt);
     }
 
     System.out.println(query);
   }
 
   public boolean exists(int id, DatabaseObject object) {
+    Statement stmt = null;
+    ResultSet rs = null;
+
     String query = "select count(*) from " + getTableName(object.getClass()) + " where id = " + id;
     try {
       System.out.println(query);
-      Statement stmt = Database.getDatabaseConnection().createStatement();
-      ResultSet rs = stmt.executeQuery(query);
+      stmt = Database.getDatabaseConnection().createStatement();
+      rs = stmt.executeQuery(query);
       rs.next();
 
       int count = rs.getInt("count");
 
       rs.close();
+      rs = null;
       stmt.close();
+      stmt = null;
 
       if (count >= 1) {
         return true;
@@ -202,6 +254,9 @@ public class DatabaseEngine {
       }
     } catch (SQLException e) {
       e.printStackTrace();
+    } finally {
+      Database.getInstance().close(rs);
+      Database.getInstance().close(stmt);
     }
     return false;
   }
