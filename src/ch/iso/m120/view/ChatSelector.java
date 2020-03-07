@@ -26,7 +26,7 @@ public class ChatSelector extends ListView<Person> {
       }
     });
 
-    this.getSelectionModel().selectedItemProperty().addListener(new ChatUpdateEvent(mainSplit));
+    this.getSelectionModel().selectedItemProperty().addListener(new ChatUpdateEvent());
     PersonObservableList.loadData();
     this.getItems().setAll(PersonObservableList.get());
 

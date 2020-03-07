@@ -43,7 +43,7 @@ public final class Auth {
 
         if (password.equals(databasePassword)) {
           this.loggedIn = true;
-          this.person = DatabaseEngine.getInstance().find(Person.class, id);
+          this.setPerson(DatabaseEngine.getInstance().find(Person.class, id));
           SceneManager.getInstance().load();
           SceneManager.getInstance().select("main");
         } else {
@@ -66,7 +66,7 @@ public final class Auth {
     DatabaseEngine.getInstance().save(credentials);
 
     this.loggedIn = true;
-    this.person = DatabaseEngine.getInstance().find(Person.class, id);
+    this.setPerson(DatabaseEngine.getInstance().find(Person.class, id));
     SceneManager.getInstance().load();
     SceneManager.getInstance().select("main");
   }
@@ -89,6 +89,18 @@ public final class Auth {
       e.printStackTrace();
     }
     return 0;
+  }
+
+  public Boolean isLoggedIn() {
+    return this.loggedIn;
+  }
+
+  public Person getPerson() {
+    return person;
+  }
+
+  public void setPerson(Person person) {
+    this.person = person;
   }
 
 }

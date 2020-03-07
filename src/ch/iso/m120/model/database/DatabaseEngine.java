@@ -6,7 +6,6 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
-import ch.iso.m120.model.Person;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
@@ -283,7 +282,6 @@ public class DatabaseEngine {
     }
   }
 
-  @SuppressWarnings("unchecked")
   private String getInsetQuery(Class<? extends DatabaseObject> object) {
     String query = "insert into " + getTableName(object) + " (";
 
@@ -329,7 +327,6 @@ public class DatabaseEngine {
     return query;
   }
 
-  @SuppressWarnings("unchecked")
   private String getUpdateQuery(Class<? extends DatabaseObject> object) {
     String query = "update " + getTableName(object) + " set ";
 
