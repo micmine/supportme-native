@@ -37,7 +37,8 @@ public class Person extends DatabaseObject {
 
   public static ArrayList<Person> all() {
     DatabaseHelper databaseHelper = new DatabaseHelper();
-    ArrayList<Person> persons = Person.fromList(databaseHelper.selectMany("select * from " + new Person().getTableName(), new Person()));
+    ArrayList<Person> persons = Person.fromList(
+        databaseHelper.selectMany("select * from " + new Person().getTableName(), new Person()));
     return persons;
   }
 
@@ -80,6 +81,4 @@ public class Person extends DatabaseObject {
   public void setEmail(String email) {
     emailProperty().set(email);
   }
-
-
 }

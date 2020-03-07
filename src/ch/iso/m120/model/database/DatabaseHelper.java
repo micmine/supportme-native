@@ -13,6 +13,7 @@ public class DatabaseHelper {
 
   public <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
     try {
+      System.out.println(query);
       Statement stmt = Database.getDatabaseConnection().createStatement();
       ResultSet rs = stmt.executeQuery(query);
       rs.next();
@@ -30,12 +31,12 @@ public class DatabaseHelper {
       e.printStackTrace();
     }
     return null;
-
   }
 
   public <T> HashMap<String, String> find(int id, DatabaseObject type) {
     try {
       String query = "select * from " + this.getTableName(type) + " where id = " + id + ";";
+      System.out.println(query);
       Statement stmt = Database.getDatabaseConnection().createStatement();
       ResultSet rs = stmt.executeQuery(query);
       rs.next();
@@ -53,13 +54,13 @@ public class DatabaseHelper {
       e.printStackTrace();
     }
     return null;
-
   }
 
   public <T> ArrayList<HashMap<String, String>> selectMany(String query, DatabaseObject type) {
     try {
       ArrayList<HashMap<String, String>> objects = new ArrayList<>();
 
+      System.out.println(query);
       Statement stmt = Database.getDatabaseConnection().createStatement();
       ResultSet rs = stmt.executeQuery(query);
 
@@ -78,7 +79,6 @@ public class DatabaseHelper {
       stmt.close();
 
       return objects;
-
     } catch (SQLException e) {
       e.printStackTrace();
     }
@@ -89,6 +89,7 @@ public class DatabaseHelper {
     try {
       String tableName = type.getClass().getSimpleName().toLowerCase();
       String query = "select id from " + tableName + " order by id desc limit 1;";
+      System.out.println(query);
 
       Statement stmt = Database.getDatabaseConnection().createStatement();
       ResultSet rs = stmt.executeQuery(query);
@@ -139,7 +140,7 @@ public class DatabaseHelper {
   public <T> boolean exists(int id, DatabaseObject object) {
     String query = "select count(*) from " + object.getTableName() + " where id = " + id;
     try {
-
+      System.out.println(query);
       Statement stmt = Database.getDatabaseConnection().createStatement();
       ResultSet rs = stmt.executeQuery(query);
       rs.next();
@@ -180,7 +181,6 @@ public class DatabaseHelper {
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     }
-
     return object;
   }
 
@@ -272,5 +272,4 @@ public class DatabaseHelper {
     }
     return query;
   }
-
 }

@@ -3,15 +3,10 @@ package ch.iso.m120.model.database;
 public class DatabaseObject {
 
   public void save() {
-    DatabaseHelper databaseHelper = new DatabaseHelper();
-    // test
-    databaseHelper.save(this);
+    new DatabaseHelper().save(this);
   }
 
   public String getTableName() {
-    DatabaseHelper databaseHelper = new DatabaseHelper();
-
-    return databaseHelper.getTableName(this);
+    return new DatabaseHelper().getTableName(this);
   }
-
 }

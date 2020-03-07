@@ -1,7 +1,6 @@
 package ch.iso.m120.controller;
 
 import java.util.HashMap;
-
 import ch.iso.m120.view.LoginView;
 import ch.iso.m120.view.MainSplit;
 import ch.iso.m120.view.RegisterView;
@@ -11,55 +10,55 @@ import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 
 public final class SceneManager {
-	private static SceneManager instance;
+  private static SceneManager instance;
 
-	private HashMap<String, Pane> screenMap = new HashMap<>();
-	private Scene main;
+  private HashMap<String, Pane> screenMap = new HashMap<>();
+  private Scene main;
 
 
-	public static SceneManager getInstance() {
-        if(instance == null) {
-        	instance = new SceneManager();
-        }
-
-        return instance;
+  public static SceneManager getInstance() {
+    if (instance == null) {
+      instance = new SceneManager();
     }
 
-	public static SceneManager getInstance(Scene main) {
-        if(instance == null) {
-        	instance = new SceneManager();
-        	instance.main = main;
-        }
+    return instance;
+  }
 
-        return instance;
+  public static SceneManager getInstance(Scene main) {
+    if (instance == null) {
+      instance = new SceneManager();
+      instance.main = main;
     }
 
-	public void add(String name, Pane pane) {
-		screenMap.put(name, pane);
-	}
+    return instance;
+  }
 
-	public void remove(String name) {
-		screenMap.remove(name);
-	}
+  public void add(String name, Pane pane) {
+    screenMap.put(name, pane);
+  }
 
-	public void select(String name) {
-		Pane pane = screenMap.get(name);
-		main.setRoot(pane);
-	}
+  public void remove(String name) {
+    screenMap.remove(name);
+  }
 
-	public void loadAuth() {
-	  VBox login = new LoginView();
-      this.add("login", login);
+  public void select(String name) {
+    Pane pane = screenMap.get(name);
+    main.setRoot(pane);
+  }
 
-      VBox register = new RegisterView();
-      this.add("register", register);
-	}
+  public void loadAuth() {
+    VBox login = new LoginView();
+    this.add("login", login);
 
-	public void load() {
-		SplitPane mainContent = new MainSplit();
-		Pane main = new Pane();
-		main.getChildren().add(mainContent);
-		this.add("main", main);
-	}
+    VBox register = new RegisterView();
+    this.add("register", register);
+  }
+
+  public void load() {
+    SplitPane mainContent = new MainSplit();
+    Pane main = new Pane();
+    main.getChildren().add(mainContent);
+    this.add("main", main);
+  }
 
 }

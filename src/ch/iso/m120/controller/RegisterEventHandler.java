@@ -22,12 +22,6 @@ public class RegisterEventHandler implements EventHandler<ActionEvent> {
 		String password = passwordField.getCharacters().toString();
 		String password2 = password2Field.getCharacters().toString();
 
-		System.out.println(username + " " + email + " " + password + " " + password2);
-
 		Auth.getInstance().register(username, email, password);
-
 	}
-
-
-
 }
