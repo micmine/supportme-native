@@ -1,8 +1,6 @@
 package ch.iso.m120.view;
 
 import ch.iso.m120.controller.SceneManager;
-import ch.iso.m120.model.Person;
-import ch.iso.m120.model.database.DatabaseHelper;
 import javafx.application.Application;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;

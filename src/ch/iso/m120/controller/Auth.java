@@ -61,7 +61,7 @@ public final class Auth {
 	public void register(String username, String email, String password) {
 		DatabaseHelper databaseHelper = new DatabaseHelper();
 
-		int id = new DatabaseHelper().getNextId(Person.class);
+		int id = new DatabaseHelper().getNextId(new Person());
 
 		Person person = new Person(id, username, email);
 		person.save();

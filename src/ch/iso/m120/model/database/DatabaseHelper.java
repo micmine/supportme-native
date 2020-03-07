@@ -119,10 +119,10 @@ public class DatabaseHelper {
         | SecurityException e) {
       e.printStackTrace();
     }
-    if (this.exists(id, object)) {
-      query = this.getUpdateQuery(object);
+    if (this.exists(id, (DatabaseObject) object)) {
+      query = this.getUpdateQuery((DatabaseObject) object);
     } else {
-      query = this.getInsetQuery(object);
+      query = this.getInsetQuery((DatabaseObject) object);
     }
 
     try {
@@ -136,10 +136,8 @@ public class DatabaseHelper {
     System.out.println(query);
   }
 
-  public <T> boolean exists(int id, Object object) {
-    String tableName = object.getClass().getSimpleName().toLowerCase();
-
-    String query = "select count(*) from " + tableName + " where id = " + id;
+  public <T> boolean exists(int id, DatabaseObject object) {
+    String query = "select count(*) from " + object.getTableName() + " where id = " + id;
     try {
 
       Statement stmt = Database.getDatabaseConnection().createStatement();
@@ -164,7 +162,6 @@ public class DatabaseHelper {
 
   public DatabaseObject toObject(HashMap<String, String> map, DatabaseObject object) {
     Field[] fields = object.getClass().getDeclaredFields();
-    int numberOfFields = fields.length;
     try {
       for (Field field : fields) {
         String fieldType = field.getType().getSimpleName().toLowerCase();
@@ -188,10 +185,9 @@ public class DatabaseHelper {
   }
 
   @SuppressWarnings("unchecked")
-  private <T> String getInsetQuery(Object object) {
+  private <T> String getInsetQuery(DatabaseObject object) {
     Class<T> objectClass = (Class<T>) object.getClass();
-    String tableName = objectClass.getSimpleName().toLowerCase();
-    String query = "insert into " + tableName + " (";
+    String query = "insert into " + object.getTableName() + " (";
 
     Field[] fields = objectClass.getDeclaredFields();
     int numberOfFields = fields.length;
@@ -234,10 +230,9 @@ public class DatabaseHelper {
   }
 
   @SuppressWarnings("unchecked")
-  private <T> String getUpdateQuery(Object object) {
+  private <T> String getUpdateQuery(DatabaseObject object) {
     Class<T> objectClass = (Class<T>) object.getClass();
-    String tableName = objectClass.getSimpleName().toLowerCase();
-    String query = "update " + tableName + " set ";
+    String query = "update " + object.getTableName() + " set ";
 
     Field[] fields = objectClass.getDeclaredFields();
     int numberOfFields = fields.length;

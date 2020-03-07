@@ -1,12 +1,4 @@
-/*
- * DatabaseObject.java
- *
- * Copyright by proserium, all rights reserved.
- * MIT License: https://mit-license.org
- */
 package ch.iso.m120.model.database;
-
-import java.util.HashMap;
 
 public class DatabaseObject {
 
