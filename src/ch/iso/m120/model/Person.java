@@ -21,12 +21,8 @@ public class Person extends DatabaseObject {
   }
 
   public Person(HashMap<String, String> map) {
-    this.id.set(Integer.parseInt(map.get("id")));
-    this.name.set(map.get("name"));
-    this.email.set(map.get("email"));
+    new DatabaseHelper().toObject(map, this);
   }
-
-  public Person() {}
 
   public static ArrayList<Person> fromList(ArrayList<HashMap<String, String>> list) {
     ArrayList<Person> out = new ArrayList<>();
@@ -37,9 +33,11 @@ public class Person extends DatabaseObject {
     return out;
   }
 
+  public Person() {}
+
   public static ArrayList<Person> all() {
     DatabaseHelper databaseHelper = new DatabaseHelper();
-    ArrayList<Person> persons = Person.fromList(databaseHelper.selectMany("select * from " + new Person().getTableName(), Person.class));
+    ArrayList<Person> persons = Person.fromList(databaseHelper.selectMany("select * from " + new Person().getTableName(), new Person()));
     return persons;
   }
 

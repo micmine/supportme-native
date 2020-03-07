@@ -6,6 +6,8 @@
  */
 package ch.iso.m120.model.database;
 
+import java.util.HashMap;
+
 public class DatabaseObject {
 
   public void save() {

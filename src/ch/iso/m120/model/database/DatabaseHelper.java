@@ -11,14 +11,14 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class DatabaseHelper {
 
-  public <T> HashMap<String, String> selectOne(String query, Class<T> type) {
+  public <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
     try {
       Statement stmt = Database.getDatabaseConnection().createStatement();
       ResultSet rs = stmt.executeQuery(query);
       rs.next();
 
       HashMap<String, String> newObject = new HashMap<>();
-      Field[] fields = type.getDeclaredFields();
+      Field[] fields = type.getClass().getDeclaredFields();
       for (Field field : fields) {
         newObject.put(field.getName(), rs.getString(field.getName()));
       }
@@ -33,7 +33,7 @@ public class DatabaseHelper {
 
   }
 
-  public <T> HashMap<String, String> find(int id, Object type) {
+  public <T> HashMap<String, String> find(int id, DatabaseObject type) {
     try {
       String query = "select * from " + this.getTableName(type) + " where id = " + id + ";";
       Statement stmt = Database.getDatabaseConnection().createStatement();
@@ -56,7 +56,7 @@ public class DatabaseHelper {
 
   }
 
-  public <T> ArrayList<HashMap<String, String>> selectMany(String query, Class<T> type) {
+  public <T> ArrayList<HashMap<String, String>> selectMany(String query, DatabaseObject type) {
     try {
       ArrayList<HashMap<String, String>> objects = new ArrayList<>();
 
@@ -66,7 +66,7 @@ public class DatabaseHelper {
       while (rs.next()) {
 
         HashMap<String, String> newObject = new HashMap<>();
-        Field[] fields = type.getDeclaredFields();
+        Field[] fields = type.getClass().getDeclaredFields();
         for (Field field : fields) {
           newObject.put(field.getName(), rs.getString(field.getName()));
         }
@@ -85,9 +85,9 @@ public class DatabaseHelper {
     return null;
   }
 
-  public <T> int getNextId(Class<T> type) {
+  public <T> int getNextId(DatabaseObject type) {
     try {
-      String tableName = type.getSimpleName().toLowerCase();
+      String tableName = type.getClass().getSimpleName().toLowerCase();
       String query = "select id from " + tableName + " order by id desc limit 1;";
 
       Statement stmt = Database.getDatabaseConnection().createStatement();
@@ -106,7 +106,7 @@ public class DatabaseHelper {
     return 0;
   }
 
-  public String getTableName(Object object) {
+  public String getTableName(DatabaseObject object) {
     return object.getClass().getSimpleName().toLowerCase();
   }
 
@@ -119,7 +119,7 @@ public class DatabaseHelper {
         | SecurityException e) {
       e.printStackTrace();
     }
-    if (this.exists(id, object.getClass())) {
+    if (this.exists(id, object)) {
       query = this.getUpdateQuery(object);
     } else {
       query = this.getInsetQuery(object);
@@ -136,8 +136,8 @@ public class DatabaseHelper {
     System.out.println(query);
   }
 
-  public <T> boolean exists(int id, Class<T> type) {
-    String tableName = type.getSimpleName().toLowerCase();
+  public <T> boolean exists(int id, Object object) {
+    String tableName = object.getClass().getSimpleName().toLowerCase();
 
     String query = "select count(*) from " + tableName + " where id = " + id;
     try {
@@ -160,6 +160,31 @@ public class DatabaseHelper {
       e.printStackTrace();
     }
     return false;
+  }
+
+  public DatabaseObject toObject(HashMap<String, String> map, DatabaseObject object) {
+    Field[] fields = object.getClass().getDeclaredFields();
+    int numberOfFields = fields.length;
+    try {
+      for (Field field : fields) {
+        String fieldType = field.getType().getSimpleName().toLowerCase();
+        String name = field.getName();
+        if (fieldType.contains("int")) {
+
+          field.set(object, new SimpleIntegerProperty(Integer.parseInt(map.get(name))));
+        } else if (fieldType.contains("string")) {
+          field.set(object, new SimpleStringProperty(map.get(name)));
+        }
+      }
+    } catch (NumberFormatException e) {
+      e.printStackTrace();
+    } catch (IllegalArgumentException e) {
+      e.printStackTrace();
+    } catch (IllegalAccessException e) {
+      e.printStackTrace();
+    }
+
+    return object;
   }
 
   @SuppressWarnings("unchecked")
