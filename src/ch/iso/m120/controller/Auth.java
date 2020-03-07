@@ -6,7 +6,7 @@ import java.sql.Statement;
 import ch.iso.m120.model.Person;
 import ch.iso.m120.model.PersonCredentials;
 import ch.iso.m120.model.database.Database;
-import ch.iso.m120.model.database.DatabaseHelper;
+import ch.iso.m120.model.database.DatabaseEngine;
 
 public final class Auth {
   private static volatile Auth instance;
@@ -29,6 +29,7 @@ public final class Auth {
 
   public void login(String username, String password) {
     try {
+      DatabaseEngine databaseHelper = new DatabaseEngine();
       int id = this.getId(username);
 
       String query = "select password from personcredentials where id = " + id + " limit 1;";
@@ -43,7 +44,7 @@ public final class Auth {
 
         if (password.equals(databasePassword)) {
           this.loggedIn = true;
-          this.person = new Person().find(id);
+          this.person = databaseHelper.find(Person.class, id);
           SceneManager.getInstance().load();
           SceneManager.getInstance().select("main");
         } else {
@@ -57,18 +58,18 @@ public final class Auth {
   }
 
   public void register(String username, String email, String password) {
-    DatabaseHelper databaseHelper = new DatabaseHelper();
+    DatabaseEngine databaseHelper = new DatabaseEngine();
 
-    int id = new DatabaseHelper().getNextId(new Person());
+    int id = new DatabaseEngine().getNextId(Person.class);
 
     Person person = new Person(id, username, email);
-    person.save();
+    databaseHelper.save(person);
 
     PersonCredentials credentials = new PersonCredentials(id, password);
-    credentials.save();
+    databaseHelper.save(credentials);
 
     this.loggedIn = true;
-    this.person = new Person().find(id);
+    this.person = databaseHelper.find(Person.class, id);
     SceneManager.getInstance().load();
     SceneManager.getInstance().select("main");
   }

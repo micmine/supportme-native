@@ -1,13 +1,10 @@
 package ch.iso.m120.model;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import ch.iso.m120.model.database.DatabaseHelper;
 import ch.iso.m120.model.database.DatabaseObject;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class Person extends DatabaseObject {
+public class Person implements DatabaseObject {
 
   private SimpleIntegerProperty id = new SimpleIntegerProperty();
   private SimpleStringProperty name = new SimpleStringProperty();
@@ -20,31 +17,7 @@ public class Person extends DatabaseObject {
     this.setEmail(email);;
   }
 
-  public Person(HashMap<String, String> map) {
-    new DatabaseHelper().toObject(map, this);
-  }
-
-  public static ArrayList<Person> fromList(ArrayList<HashMap<String, String>> list) {
-    ArrayList<Person> out = new ArrayList<>();
-    for (HashMap<String, String> hashMap : list) {
-      Person person = new Person(hashMap);
-      out.add(person);
-    }
-    return out;
-  }
-
   public Person() {}
-
-  public static ArrayList<Person> all() {
-    DatabaseHelper databaseHelper = new DatabaseHelper();
-    ArrayList<Person> persons = Person.fromList(
-        databaseHelper.selectMany("select * from " + new Person().getTableName(), new Person()));
-    return persons;
-  }
-
-  public static Person find(int id) {
-    return new Person(new DatabaseHelper().find(id, new Person()));
-  }
 
   public SimpleIntegerProperty idProperty() {
     return id;

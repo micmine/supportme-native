@@ -4,16 +4,17 @@ import ch.iso.m120.model.database.DatabaseObject;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class PersonCredentials extends DatabaseObject {
+public class PersonCredentials implements DatabaseObject {
 
   private SimpleIntegerProperty id = new SimpleIntegerProperty();
   private SimpleStringProperty password = new SimpleStringProperty();
 
   public PersonCredentials(Integer id, String password) {
-    super();
     this.id.set(id);
     this.password.set(password);
   }
+
+  public PersonCredentials() {}
 
   public SimpleIntegerProperty idProperty() {
     return id;

@@ -6,12 +6,14 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
+import ch.iso.m120.model.Person;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
-public class DatabaseHelper {
+public class DatabaseEngine {
 
   public <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
+
     try {
       System.out.println(query);
       Statement stmt = Database.getDatabaseConnection().createStatement();
@@ -34,16 +36,16 @@ public class DatabaseHelper {
     return null;
   }
 
-  public <T> HashMap<String, String> find(int id, DatabaseObject type) {
+  public <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> type) {
     try {
-      String query = "select * from " + this.getTableName(type) + " where id = " + id + ";";
+      String query = "select * from " + getTableName(type) + " where id = " + id + ";";
       System.out.println(query);
       Statement stmt = Database.getDatabaseConnection().createStatement();
       ResultSet rs = stmt.executeQuery(query);
       rs.next();
 
       HashMap<String, String> newObject = new HashMap<>();
-      Field[] fields = type.getClass().getDeclaredFields();
+      Field[] fields = type.getDeclaredFields();
       for (Field field : fields) {
         field.setAccessible(true);
         newObject.put(field.getName(), rs.getString(field.getName()));
@@ -58,7 +60,8 @@ public class DatabaseHelper {
     return null;
   }
 
-  public <T> ArrayList<HashMap<String, String>> selectMany(String query, DatabaseObject type) {
+  public ArrayList<HashMap<String, String>> selectMany(String query,
+      Class<? extends DatabaseObject> type) {
     try {
       ArrayList<HashMap<String, String>> objects = new ArrayList<>();
 
@@ -69,7 +72,7 @@ public class DatabaseHelper {
       while (rs.next()) {
 
         HashMap<String, String> newObject = new HashMap<>();
-        Field[] fields = type.getClass().getDeclaredFields();
+        Field[] fields = type.getDeclaredFields();
         for (Field field : fields) {
           field.setAccessible(true);
           newObject.put(field.getName(), rs.getString(field.getName()));
@@ -88,10 +91,10 @@ public class DatabaseHelper {
     return null;
   }
 
-  public <T> int getNextId(DatabaseObject type) {
+  public int getNextId(Class<? extends DatabaseObject> type) {
     try {
-      String tableName = type.getClass().getSimpleName().toLowerCase();
-      String query = "select id from " + tableName + " order by id desc limit 1;";
+      String tableName = type.getSimpleName().toLowerCase();
+      String query = "select max(id) as id from " + tableName;
       System.out.println(query);
 
       Statement stmt = Database.getDatabaseConnection().createStatement();
@@ -104,17 +107,56 @@ public class DatabaseHelper {
       rs.close();
       stmt.close();
     } catch (SQLException e) {
-      // TODO Auto-generated catch block
       e.printStackTrace();
     }
     return 0;
   }
 
-  public String getTableName(DatabaseObject object) {
-    return object.getClass().getSimpleName().toLowerCase();
+
+  public <T extends DatabaseObject> ArrayList<T> all(Class<T> object) {
+    String tableName = getTableName(object);
+    ArrayList<T> list = fromList(selectMany("select * from " + tableName, object), object);
+    return list;
   }
 
-  public <T> void save(Object object) {
+  public <T extends DatabaseObject> ArrayList<T> fromList(ArrayList<HashMap<String, String>> list,
+      Class<T> object) {
+    ArrayList<T> out = new ArrayList<>();
+    for (HashMap<String, String> hashMap : list) {
+
+      T t;
+      try {
+        t = object.newInstance();
+        toObject(hashMap, t);
+        out.add(t);
+      } catch (InstantiationException | IllegalAccessException e) {
+        e.printStackTrace();
+      }
+    }
+    return out;
+  }
+
+
+  public <T extends DatabaseObject> T find(Class<T> objectClass, int id) {
+    T t = null;
+    try {
+      t = objectClass.newInstance();
+      HashMap<String, String> hashMap = find(id, objectClass);
+      toObject(hashMap, t);
+
+    } catch (InstantiationException | IllegalAccessException e) {
+      e.printStackTrace();
+    }
+    return t;
+  }
+
+
+
+  public String getTableName(Class<? extends DatabaseObject> object) {
+    return object.getSimpleName().toLowerCase();
+  }
+
+  public void save(DatabaseObject object) {
     String query = "";
     int id = 0;
     try {
@@ -123,10 +165,10 @@ public class DatabaseHelper {
         | SecurityException e) {
       e.printStackTrace();
     }
-    if (this.exists(id, (DatabaseObject) object)) {
-      query = this.getUpdateQuery((DatabaseObject) object);
+    if (this.exists(id, object)) {
+      query = this.getUpdateQuery(object.getClass());
     } else {
-      query = this.getInsetQuery((DatabaseObject) object);
+      query = this.getInsetQuery(object.getClass());
     }
 
     try {
@@ -140,8 +182,8 @@ public class DatabaseHelper {
     System.out.println(query);
   }
 
-  public <T> boolean exists(int id, DatabaseObject object) {
-    String query = "select count(*) from " + object.getTableName() + " where id = " + id;
+  public boolean exists(int id, DatabaseObject object) {
+    String query = "select count(*) from " + getTableName(object.getClass()) + " where id = " + id;
     try {
       System.out.println(query);
       Statement stmt = Database.getDatabaseConnection().createStatement();
@@ -164,7 +206,7 @@ public class DatabaseHelper {
     return false;
   }
 
-  public DatabaseObject toObject(HashMap<String, String> map, DatabaseObject object) {
+  public void toObject(HashMap<String, String> map, DatabaseObject object) {
     Field[] fields = object.getClass().getDeclaredFields();
     try {
       for (Field field : fields) {
@@ -184,15 +226,13 @@ public class DatabaseHelper {
     } catch (IllegalAccessException e) {
       e.printStackTrace();
     }
-    return object;
   }
 
   @SuppressWarnings("unchecked")
-  private <T> String getInsetQuery(DatabaseObject object) {
-    Class<T> objectClass = (Class<T>) object.getClass();
-    String query = "insert into " + object.getTableName() + " (";
+  private String getInsetQuery(Class<? extends DatabaseObject> object) {
+    String query = "insert into " + getTableName(object) + " (";
 
-    Field[] fields = objectClass.getDeclaredFields();
+    Field[] fields = object.getDeclaredFields();
     int numberOfFields = fields.length;
     int i = 0;
     for (Field field : fields) {
@@ -235,11 +275,10 @@ public class DatabaseHelper {
   }
 
   @SuppressWarnings("unchecked")
-  private <T> String getUpdateQuery(DatabaseObject object) {
-    Class<T> objectClass = (Class<T>) object.getClass();
-    String query = "update " + object.getTableName() + " set ";
+  private String getUpdateQuery(Class<? extends DatabaseObject> object) {
+    String query = "update " + getTableName(object) + " set ";
 
-    Field[] fields = objectClass.getDeclaredFields();
+    Field[] fields = object.getDeclaredFields();
     int numberOfFields = fields.length;
     int i = 0;
 
@@ -271,7 +310,7 @@ public class DatabaseHelper {
 
     try {
       query = query + " where id = "
-          + ((SimpleIntegerProperty) objectClass.getField("id").get(object)).intValue() + ";";
+          + ((SimpleIntegerProperty) object.getField("id").get(object)).intValue() + ";";
     } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
         | SecurityException e) {
       e.printStackTrace();

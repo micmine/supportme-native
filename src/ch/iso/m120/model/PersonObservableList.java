@@ -1,6 +1,7 @@
 package ch.iso.m120.model;
 
 import java.util.ArrayList;
+import ch.iso.m120.model.database.DatabaseEngine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
@@ -23,7 +24,7 @@ public class PersonObservableList {
   }
 
   public static void loadData() {
-    ArrayList<Person> persons = Person.all();
+    ArrayList<Person> persons = new DatabaseEngine().all(Person.class);
 
     for (Person person : persons) {
       data.add(person);
