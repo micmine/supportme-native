@@ -67,9 +67,6 @@ public final class Auth {
     PersonCredentials credentials = new PersonCredentials(id, password);
     credentials.save();
 
-    databaseHelper.save(person);
-    databaseHelper.save(credentials);
-
     this.loggedIn = true;
     this.person = new Person().find(id);
     SceneManager.getInstance().load();

@@ -21,6 +21,7 @@ public class DatabaseHelper {
       HashMap<String, String> newObject = new HashMap<>();
       Field[] fields = type.getClass().getDeclaredFields();
       for (Field field : fields) {
+        field.setAccessible(true);
         newObject.put(field.getName(), rs.getString(field.getName()));
       }
 
@@ -44,6 +45,7 @@ public class DatabaseHelper {
       HashMap<String, String> newObject = new HashMap<>();
       Field[] fields = type.getClass().getDeclaredFields();
       for (Field field : fields) {
+        field.setAccessible(true);
         newObject.put(field.getName(), rs.getString(field.getName()));
       }
 
@@ -69,6 +71,7 @@ public class DatabaseHelper {
         HashMap<String, String> newObject = new HashMap<>();
         Field[] fields = type.getClass().getDeclaredFields();
         for (Field field : fields) {
+          field.setAccessible(true);
           newObject.put(field.getName(), rs.getString(field.getName()));
         }
 
@@ -165,10 +168,10 @@ public class DatabaseHelper {
     Field[] fields = object.getClass().getDeclaredFields();
     try {
       for (Field field : fields) {
+        field.setAccessible(true);
         String fieldType = field.getType().getSimpleName().toLowerCase();
         String name = field.getName();
         if (fieldType.contains("int")) {
-
           field.set(object, new SimpleIntegerProperty(Integer.parseInt(map.get(name))));
         } else if (fieldType.contains("string")) {
           field.set(object, new SimpleStringProperty(map.get(name)));
@@ -193,6 +196,7 @@ public class DatabaseHelper {
     int numberOfFields = fields.length;
     int i = 0;
     for (Field field : fields) {
+      field.setAccessible(true);
       i++;
       query = query + field.getName();
       if (i < numberOfFields) {
@@ -204,6 +208,7 @@ public class DatabaseHelper {
 
     i = 0;
     for (Field field : fields) {
+      field.setAccessible(true);
       i++;
       String fieldType = field.getType().getSimpleName().toLowerCase();
 
@@ -240,6 +245,7 @@ public class DatabaseHelper {
 
     i = 0;
     for (Field field : fields) {
+      field.setAccessible(true);
       i++;
       String fieldType = field.getType().getSimpleName().toLowerCase();
 

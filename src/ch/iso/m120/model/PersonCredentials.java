@@ -6,8 +6,8 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class PersonCredentials extends DatabaseObject {
 
-  public SimpleIntegerProperty id = new SimpleIntegerProperty();
-  public SimpleStringProperty password = new SimpleStringProperty();
+  private SimpleIntegerProperty id = new SimpleIntegerProperty();
+  private SimpleStringProperty password = new SimpleStringProperty();
 
   public PersonCredentials(Integer id, String password) {
     super();
