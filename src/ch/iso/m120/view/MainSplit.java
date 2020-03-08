@@ -10,11 +10,11 @@ public class MainSplit extends SplitPane {
 
     // if user.hasPermission
     // ChatSelector
-    ChatSelector chatSelector = new ChatSelector(this);
+    ChatSelector chatSelector = new ChatSelector();
     this.getItems().add(chatSelector);
 
     // Chat view
-    SplitPane chatSplit = new ChatSplit(chatSelector);
+    SplitPane chatSplit = new ChatSplit();
     this.getItems().add(chatSplit);
 
     this.getDividers().get(0).setPosition(0.05);

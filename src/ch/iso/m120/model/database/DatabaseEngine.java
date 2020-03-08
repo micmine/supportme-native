@@ -17,7 +17,7 @@ public class DatabaseEngine {
 
   public static DatabaseEngine getInstance() {
     if (instance == null) {
-      synchronized (Database.class) {
+      synchronized (DatabaseEngine.class) {
         if (instance == null) {
           instance = new DatabaseEngine();
         }

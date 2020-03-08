@@ -1,6 +1,7 @@
 package ch.iso.m120.controller;
 
 import java.util.HashMap;
+import ch.iso.m120.model.database.DatabaseEngine;
 import ch.iso.m120.view.LoginView;
 import ch.iso.m120.view.MainSplit;
 import ch.iso.m120.view.RegisterView;
@@ -8,28 +9,36 @@ import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public final class SceneManager {
-  private static SceneManager instance;
+  private static volatile SceneManager instance;
 
   private HashMap<String, Pane> screenMap = new HashMap<>();
-  private Scene main;
+  private Stage stage;
 
+  private SceneManager() {}
 
   public static SceneManager getInstance() {
     if (instance == null) {
-      instance = new SceneManager();
+      synchronized (SceneManager.class) {
+        if (instance == null) {
+          instance = new SceneManager();
+        }
+      }
     }
-
     return instance;
   }
 
-  public static SceneManager getInstance(Scene main) {
+  public static SceneManager getInstance(Stage stage) {
     if (instance == null) {
-      instance = new SceneManager();
-      instance.main = main;
+      synchronized (SceneManager.class) {
+        if (instance == null) {
+          instance = new SceneManager();
+          instance.stage = stage;
+        }
+      }
     }
-
     return instance;
   }
 
@@ -43,7 +52,9 @@ public final class SceneManager {
 
   public void select(String name) {
     Pane pane = screenMap.get(name);
-    main.setRoot(pane);
+    Scene scene = new Scene(pane);
+    stage.setScene(scene);
+    stage.sizeToScene();
   }
 
   public void loadAuth() {

@@ -6,11 +6,11 @@ import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 
 public class ChatSplit extends SplitPane {
-  public ChatSplit(ChatSelector chatSelector) {
+  public ChatSplit() {
     this.setOrientation(Orientation.VERTICAL);
     this.setId("chatSplit");
 
-    VBox messageListView = new MessageListView(this, chatSelector);
+    VBox messageListView = new MessageListView();
     this.getItems().add(messageListView);
 
     TextField textField = new TextField();

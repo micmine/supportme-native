@@ -15,17 +15,16 @@ public class Main extends Application {
   @Override
   public void start(Stage stage) {
     try {
-      Scene scene = new Scene(new Pane(), 400, 400);
-      SceneManager manager = SceneManager.getInstance(scene);
+      Scene scene = new Scene(new Pane(), 800, 800);
+      SceneManager manager = SceneManager.getInstance(stage);
       manager.loadAuth();
 
       // manager.load();
-
-      manager.select("login");
       // scene.getStylesheets().add(getClass().getResource("css/application.css").toExternalForm());
 
       stage.setTitle("supportme-native");
-      stage.setScene(scene);
+      manager.select("login");
+      stage.sizeToScene();
       stage.show();
 
     } catch (Exception e) {

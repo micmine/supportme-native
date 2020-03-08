@@ -1,5 +1,6 @@
 package ch.iso.m120.controller;
 
+import ch.iso.m120.model.General;
 import ch.iso.m120.model.Person;
 import ch.iso.m120.view.ChatSelector;
 import javafx.beans.value.ChangeListener;
@@ -11,8 +12,8 @@ public class ChatUpdateEvent implements ChangeListener<Person> {
   public void changed(ObservableValue<? extends Person> observable, Person oldValue,
       Person newValue) {
     System.out.println("New selection: " + newValue.getName());
-    ChatSelector.setSelected(newValue);
-    System.out.println(ChatSelector.getSelected().getName());
+
+    General.getInstance().setSelected(newValue);
   }
 
 }
