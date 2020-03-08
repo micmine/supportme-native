@@ -161,6 +161,11 @@ public class DatabaseEngine {
     return list;
   }
 
+  public <T extends DatabaseObject> ArrayList<T> select(String query, Class<T> object) {
+    ArrayList<T> list = fromList(selectMany(query, object), object);
+    return list;
+  }
+
   public <T extends DatabaseObject> ArrayList<T> fromList(ArrayList<HashMap<String, String>> list,
       Class<T> object) {
     ArrayList<T> out = new ArrayList<>();
