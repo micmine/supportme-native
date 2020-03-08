@@ -1,12 +1,12 @@
 package ch.iso.m120.controller;
 
 import java.util.HashMap;
-import ch.iso.m120.model.database.DatabaseEngine;
 import ch.iso.m120.view.LoginView;
 import ch.iso.m120.view.MainSplit;
 import ch.iso.m120.view.RegisterView;
 import javafx.scene.Scene;
 import javafx.scene.control.SplitPane;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -67,8 +67,8 @@ public final class SceneManager {
 
   public void load() {
     SplitPane mainContent = new MainSplit();
-    Pane main = new Pane();
-    main.getChildren().add(mainContent);
+    BorderPane main = new BorderPane();
+    main.setCenter(mainContent);
     this.add("main", main);
   }
 

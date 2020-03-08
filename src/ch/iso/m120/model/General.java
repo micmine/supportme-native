@@ -1,13 +1,4 @@
-/*
- * General.java
- *
- * Copyright by proserium, all rights reserved.
- * MIT License: https://mit-license.org
- */
 package ch.iso.m120.model;
-
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
 
 public class General {
 

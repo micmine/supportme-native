@@ -2,7 +2,6 @@ package ch.iso.m120.controller;
 
 import ch.iso.m120.model.General;
 import ch.iso.m120.model.Person;
-import ch.iso.m120.view.ChatSelector;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 
