@@ -6,6 +6,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.geometry.Insets;
 import javafx.scene.control.Button;
+import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -27,7 +28,7 @@ public class LoginView extends VBox {
     Text password = new Text("Password:");
     this.getChildren().add(password);
 
-    TextField passwordtext = new TextField();
+    PasswordField passwordtext = new PasswordField();
     passwordtext.setPrefColumnCount(10);
     this.getChildren().add(passwordtext);
 
