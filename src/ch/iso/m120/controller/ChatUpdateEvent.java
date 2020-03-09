@@ -13,6 +13,10 @@ public class ChatUpdateEvent implements ChangeListener<Person> {
     System.out.println("New selection: " + newValue.getName());
 
     General.getInstance().setSelected(newValue);
+    General.getInstance().getMessageListView().reload();
+
+    // reload left
+
   }
 
 }

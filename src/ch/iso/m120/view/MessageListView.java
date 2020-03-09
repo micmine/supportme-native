@@ -7,9 +7,17 @@ import javafx.scene.text.Text;
 
 public class MessageListView extends VBox {
 
+  private Text text;
+
   public MessageListView() {
+    General.getInstance().setMessageListView(this);
     General.getInstance().setSelected(new Person(99, "NO", "NO@gmail.com"));
-    Text text = new Text(General.getInstance().getSelected().getName());
+    this.text = new Text(General.getInstance().getSelected().getName());
     this.getChildren().add(text);
   }
+
+  public void reload() {
+    text.setText(General.getInstance().getSelected().getName());
+  }
+
 }

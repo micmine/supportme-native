@@ -1,6 +1,8 @@
 package ch.iso.m120.model;
 
-public class General {
+import ch.iso.m120.view.MessageListView;
+
+public class General{
 
   private static volatile General instance;
 
@@ -17,6 +19,9 @@ public class General {
     return instance;
   }
 
+  private Person selected;
+  private MessageListView messageListView;
+
   public Person getSelected() {
     return selected;
   }
@@ -25,5 +30,12 @@ public class General {
     this.selected = selected;
   }
 
-  private Person selected;
+
+  public MessageListView getMessageListView() {
+    return messageListView;
+  }
+
+  public void setMessageListView(MessageListView messageListView) {
+    this.messageListView = messageListView;
+  }
 }
