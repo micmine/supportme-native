@@ -208,15 +208,17 @@ public class DatabaseEngine {
     String query = "";
     int id = 0;
     try {
-      id = ((SimpleIntegerProperty) object.getClass().getField("id").get(object)).intValue();
+      Field field = object.getClass().getDeclaredField("id");
+      field.setAccessible(true);
+      id = ((SimpleIntegerProperty) field.get(object)).intValue();
     } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
         | SecurityException e) {
       e.printStackTrace();
     }
     if (this.exists(id, object)) {
-      query = this.getUpdateQuery(object.getClass());
+      query = this.getUpdateQuery(object);
     } else {
-      query = this.getInsetQuery(object.getClass());
+      query = this.getInsetQuery(object);
     }
 
     try {
@@ -287,14 +289,13 @@ public class DatabaseEngine {
     }
   }
 
-  private String getInsetQuery(Class<? extends DatabaseObject> object) {
-    String query = "insert into " + getTableName(object) + " (";
+  private String getInsetQuery(DatabaseObject object) {
+    String query = "insert into " + getTableName(object.getClass()) + " (";
 
-    Field[] fields = object.getDeclaredFields();
+    Field[] fields = object.getClass().getDeclaredFields();
     int numberOfFields = fields.length;
     int i = 0;
     for (Field field : fields) {
-      field.setAccessible(true);
       i++;
       query = query + field.getName();
       if (i < numberOfFields) {
@@ -306,12 +307,13 @@ public class DatabaseEngine {
 
     i = 0;
     for (Field field : fields) {
-      field.setAccessible(true);
       i++;
       String fieldType = field.getType().getSimpleName().toLowerCase();
 
       try {
+        field.setAccessible(true);
         if (fieldType.contains("int")) {
+          field.get(object);
           int integer = ((SimpleIntegerProperty) field.get(object)).intValue();
           query = query + integer;
         } else if (fieldType.contains("string")) {
@@ -332,10 +334,10 @@ public class DatabaseEngine {
     return query;
   }
 
-  private String getUpdateQuery(Class<? extends DatabaseObject> object) {
-    String query = "update " + getTableName(object) + " set ";
+  private String getUpdateQuery(DatabaseObject object) {
+    String query = "update " + getTableName(object.getClass()) + " set ";
 
-    Field[] fields = object.getDeclaredFields();
+    Field[] fields = object.getClass().getDeclaredFields();
     int numberOfFields = fields.length;
     int i = 0;
 
@@ -367,7 +369,7 @@ public class DatabaseEngine {
 
     try {
       query = query + " where id = "
-          + ((SimpleIntegerProperty) object.getField("id").get(object)).intValue() + ";";
+          + ((SimpleIntegerProperty) object.getClass().getDeclaredField("id").get(object)).intValue() + ";";
     } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
         | SecurityException e) {
       e.printStackTrace();
