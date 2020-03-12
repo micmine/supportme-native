@@ -15,10 +15,6 @@ public class Main extends Application {
   @Override
   public void start(Stage stage) {
     try {
-      Person person = new Person(DatabaseEngine.getInstance().getNextId(Person.class), "jubby", "jubbi@gnali.om");
-
-      DatabaseEngine.getInstance().save(person);
-      /*
       SceneManager manager = SceneManager.getInstance(stage);
       manager.loadAuth();
 
@@ -26,9 +22,6 @@ public class Main extends Application {
       manager.select("login");
       stage.sizeToScene();
       stage.show();
-
-      */
-
     } catch (Exception e) {
       e.printStackTrace();
     }
