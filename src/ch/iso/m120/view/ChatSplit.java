@@ -13,7 +13,7 @@ public class ChatSplit extends SplitPane {
     VBox messageListView = new MessageListView();
     this.getItems().add(messageListView);
 
-    TextField textField = new TextField();
-    this.getItems().add(textField);
+    ChatForm chatForm = new ChatForm();
+    this.getItems().add(chatForm);
   }
 }

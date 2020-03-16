@@ -3,6 +3,7 @@ package ch.iso.m120.controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import ch.iso.m120.model.Chat;
 import ch.iso.m120.model.Person;
 import ch.iso.m120.model.PersonCredentials;
 import ch.iso.m120.model.database.Database;
@@ -64,6 +65,10 @@ public final class Auth {
 
     PersonCredentials credentials = new PersonCredentials(id, password);
     DatabaseEngine.getInstance().save(credentials);
+
+    Chat chat = new Chat(DatabaseEngine.getInstance().getNextId(Chat.class), username);
+    DatabaseEngine.getInstance().save(chat);
+
 
     this.loggedIn = true;
     this.setPerson(DatabaseEngine.getInstance().find(Person.class, id));

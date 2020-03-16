@@ -3,29 +3,31 @@ package ch.iso.m120.view;
 import ch.iso.m120.controller.ChatUpdateEvent;
 import ch.iso.m120.model.General;
 import ch.iso.m120.model.Person;
-import ch.iso.m120.model.PersonObservableList;
+import ch.iso.m120.model.Chat;
+import ch.iso.m120.model.ChatObservableList;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 
-public class ChatSelector extends ListView<Person> {
+public class ChatSelector extends ListView<Chat> {
 
   public ChatSelector() {
-    this.setCellFactory(value -> new ListCell<Person>() {
+    this.setCellFactory(value -> new ListCell<Chat>() {
       @Override
-      protected void updateItem(Person item, boolean empty) {
+      protected void updateItem(Chat item, boolean empty) {
         super.updateItem(item, empty);
 
-        if (empty || item == null || item.getName() == null) {
+        if (empty || item == null) {
           setText(null);
         } else {
-          setText(item.getName() + " -  " + item.getEmail());
+          setText(item.getName());
         }
       }
     });
 
     this.getSelectionModel().selectedItemProperty().addListener(new ChatUpdateEvent());
-    PersonObservableList.loadData();
-    this.getItems().setAll(PersonObservableList.get());
+    ChatObservableList.loadData();
+    this.getItems().setAll(ChatObservableList.get());
+    General.getInstance().setSelected(this.getItems().get(0));
 
     General.getInstance().setSelected(this.getSelectionModel().getSelectedItem());
   }

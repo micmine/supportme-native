@@ -1,7 +1,11 @@
 package ch.iso.m120.view;
 
+import ch.iso.m120.model.Chat;
 import ch.iso.m120.model.General;
+import ch.iso.m120.model.Message;
+import ch.iso.m120.model.MessageObservableList;
 import ch.iso.m120.model.Person;
+import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
 
@@ -11,13 +15,18 @@ public class MessageListView extends VBox {
 
   public MessageListView() {
     General.getInstance().setMessageListView(this);
-    General.getInstance().setSelected(new Person(99, "NO", "NO@gmail.com"));
-    this.text = new Text(General.getInstance().getSelected().getName());
-    this.getChildren().add(text);
   }
 
   public void reload() {
-    text.setText(General.getInstance().getSelected().getName());
+    MessageListView.clearConstraints(this);
+
+    MessageObservableList.loadData();
+
+    ObservableList<Message> messages = MessageObservableList.get();
+
+    for (Message message : messages) {
+      this.getChildren().add(new Text(message.getValue()));
+    }
   }
 
 }

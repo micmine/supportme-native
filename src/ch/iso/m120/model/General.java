@@ -19,14 +19,14 @@ public class General{
     return instance;
   }
 
-  private Person selected;
+  private Chat selected;
   private MessageListView messageListView;
 
-  public Person getSelected() {
+  public Chat getSelected() {
     return selected;
   }
 
-  public void setSelected(Person selected) {
+  public void setSelected(Chat selected) {
     this.selected = selected;
   }
 

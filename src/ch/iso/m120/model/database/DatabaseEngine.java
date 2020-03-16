@@ -58,18 +58,18 @@ public class DatabaseEngine {
     return null;
   }
 
-  public <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> type) {
+  public <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> objectClass) {
     Statement stmt = null;
     ResultSet rs = null;
     try {
-      String query = "select * from " + getTableName(type) + " where id = " + id + ";";
+      String query = "select * from " + getTableName(objectClass) + " where id = " + id + ";";
       System.out.println(query);
       stmt = Database.getDatabaseConnection().createStatement();
       rs = stmt.executeQuery(query);
       rs.next();
 
       HashMap<String, String> newObject = new HashMap<>();
-      Field[] fields = type.getDeclaredFields();
+      Field[] fields = objectClass.getDeclaredFields();
       for (Field field : fields) {
         field.setAccessible(true);
         newObject.put(field.getName(), rs.getString(field.getName()));
@@ -90,7 +90,7 @@ public class DatabaseEngine {
   }
 
   public ArrayList<HashMap<String, String>> selectMany(String query,
-      Class<? extends DatabaseObject> type) {
+      Class<? extends DatabaseObject> objectClass) {
     Statement stmt = null;
     ResultSet rs = null;
     try {
@@ -102,7 +102,7 @@ public class DatabaseEngine {
 
       while (rs.next()) {
         HashMap<String, String> newObject = new HashMap<>();
-        Field[] fields = type.getDeclaredFields();
+        Field[] fields = objectClass.getDeclaredFields();
         for (Field field : fields) {
           field.setAccessible(true);
           newObject.put(field.getName(), rs.getString(field.getName()));
@@ -126,11 +126,11 @@ public class DatabaseEngine {
     return null;
   }
 
-  public int getNextId(Class<? extends DatabaseObject> type) {
+  public int getNextId(Class<? extends DatabaseObject> objectClass) {
     Statement stmt = null;
     ResultSet rs = null;
     try {
-      String tableName = type.getSimpleName().toLowerCase();
+      String tableName = objectClass.getSimpleName().toLowerCase();
       String query = "select max(id) as id from " + tableName;
       System.out.println(query);
 
@@ -155,14 +155,14 @@ public class DatabaseEngine {
   }
 
 
-  public <T extends DatabaseObject> ArrayList<T> all(Class<T> object) {
-    String tableName = getTableName(object);
-    ArrayList<T> list = fromList(selectMany("select * from " + tableName, object), object);
+  public <T extends DatabaseObject> ArrayList<T> all(Class<T> objectClass) {
+    String tableName = getTableName(objectClass);
+    ArrayList<T> list = fromList(selectMany("select * from " + tableName, objectClass), objectClass);
     return list;
   }
 
-  public <T extends DatabaseObject> ArrayList<T> select(String query, Class<T> object) {
-    ArrayList<T> list = fromList(selectMany(query, object), object);
+  public <T extends DatabaseObject> ArrayList<T> select(String query, Class<T> objectClass) {
+    ArrayList<T> list = fromList(selectMany(query, objectClass), objectClass);
     return list;
   }
 
@@ -174,6 +174,7 @@ public class DatabaseEngine {
       T t;
       try {
         t = object.newInstance();
+        System.err.println(hashMap);
         toObject(hashMap, t);
         out.add(t);
       } catch (InstantiationException | IllegalAccessException e) {
@@ -197,10 +198,8 @@ public class DatabaseEngine {
     return t;
   }
 
-
-
-  public String getTableName(Class<? extends DatabaseObject> object) {
-    return object.getSimpleName().toLowerCase();
+  public String getTableName(Class<? extends DatabaseObject> objectClass) {
+    return objectClass.getSimpleName().toLowerCase();
   }
 
   public void save(DatabaseObject object) {
