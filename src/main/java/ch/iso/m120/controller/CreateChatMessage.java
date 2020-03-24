@@ -6,6 +6,8 @@
  */
 package ch.iso.m120.controller;
 
+import java.util.Date;
+
 import ch.iso.m120.model.General;
 import ch.iso.m120.model.Message;
 import ch.iso.m120.model.database.DatabaseEngine;
@@ -15,19 +17,20 @@ import javafx.scene.control.TextField;
 
 public class CreateChatMessage implements EventHandler {
 
-  private TextField field;
+	private TextField field;
 
-  public CreateChatMessage(TextField textField) {
-    this.field = textField;
-  }
+	public CreateChatMessage(TextField textField) {
+		this.field = textField;
+	}
 
-  @Override
-  public void handle(Event arg0) {
-    System.out.println(General.getInstance().getSelected().getId() + " : " + field.getText());
-    Message message = new Message(DatabaseEngine.getInstance().getNextId(Message.class), General.getInstance().getSelected().getId(), field.getText());
+	@Override
+	public void handle(Event arg0) {
+		System.out.println(General.getInstance().getSelected().getId() + " : " + field.getText());
+		Message message = new Message(DatabaseEngine.getInstance().getNextId(Message.class),
+				General.getInstance().getSelected().getId(), field.getText(), new Date());
 
-    DatabaseEngine.getInstance().save(message);
-    field.clear();
-  }
+		DatabaseEngine.getInstance().save(message);
+		field.clear();
+	}
 
 }

@@ -5,374 +5,380 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 
 public class DatabaseEngine {
 
-  private static volatile DatabaseEngine instance;
+	private static volatile DatabaseEngine instance;
 
-  private DatabaseEngine() {}
+	private DatabaseEngine() {
+	}
 
-  public static DatabaseEngine getInstance() {
-    if (instance == null) {
-      synchronized (DatabaseEngine.class) {
-        if (instance == null) {
-          instance = new DatabaseEngine();
-        }
-      }
-    }
-    return instance;
-  }
+	public static DatabaseEngine getInstance() {
+		if (instance == null) {
+			synchronized (DatabaseEngine.class) {
+				if (instance == null) {
+					instance = new DatabaseEngine();
+				}
+			}
+		}
+		return instance;
+	}
 
-  public <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
-    Statement stmt = null;
-    ResultSet rs = null;
+	public <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
+		Statement stmt = null;
+		ResultSet rs = null;
 
-    try {
-      System.out.println(query);
-      stmt = Database.getDatabaseConnection().createStatement();
-      rs = stmt.executeQuery(query);
-      rs.next();
+		try {
+			System.out.println(query);
+			stmt = Database.getDatabaseConnection().createStatement();
+			rs = stmt.executeQuery(query);
+			rs.next();
 
-      HashMap<String, String> newObject = new HashMap<>();
-      Field[] fields = type.getClass().getDeclaredFields();
-      for (Field field : fields) {
-        field.setAccessible(true);
-        newObject.put(field.getName(), rs.getString(field.getName()));
-      }
+			HashMap<String, String> newObject = new HashMap<>();
+			Field[] fields = type.getClass().getDeclaredFields();
+			for (Field field : fields) {
+				field.setAccessible(true);
+				newObject.put(field.getName(), rs.getString(field.getName()));
+			}
 
-      rs.close();
-      rs = null;
-      stmt.close();
-      stmt = null;
-      return newObject;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      Database.getInstance().close(rs);
-      Database.getInstance().close(stmt);
-    }
+			rs.close();
+			rs = null;
+			stmt.close();
+			stmt = null;
+			return newObject;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Database.getInstance().close(rs);
+			Database.getInstance().close(stmt);
+		}
 
-    return null;
-  }
+		return null;
+	}
 
-  public <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> objectClass) {
-    Statement stmt = null;
-    ResultSet rs = null;
-    try {
-      String query = "select * from " + getTableName(objectClass) + " where id = " + id + ";";
-      System.out.println(query);
-      stmt = Database.getDatabaseConnection().createStatement();
-      rs = stmt.executeQuery(query);
-      rs.next();
+	public <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> objectClass) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			String query = "select * from " + getTableName(objectClass) + " where id = " + id + ";";
+			System.out.println(query);
+			stmt = Database.getDatabaseConnection().createStatement();
+			rs = stmt.executeQuery(query);
+			rs.next();
 
-      HashMap<String, String> newObject = new HashMap<>();
-      Field[] fields = objectClass.getDeclaredFields();
-      for (Field field : fields) {
-        field.setAccessible(true);
-        newObject.put(field.getName(), rs.getString(field.getName()));
-      }
+			HashMap<String, String> newObject = new HashMap<>();
+			Field[] fields = objectClass.getDeclaredFields();
+			for (Field field : fields) {
+				field.setAccessible(true);
+				newObject.put(field.getName(), rs.getString(field.getName()));
+			}
 
-      rs.close();
-      rs = null;
-      stmt.close();
-      stmt = null;
-      return newObject;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      Database.getInstance().close(rs);
-      Database.getInstance().close(stmt);
-    }
-    return null;
-  }
+			rs.close();
+			rs = null;
+			stmt.close();
+			stmt = null;
+			return newObject;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Database.getInstance().close(rs);
+			Database.getInstance().close(stmt);
+		}
+		return null;
+	}
 
-  public ArrayList<HashMap<String, String>> selectMany(String query,
-      Class<? extends DatabaseObject> objectClass) {
-    Statement stmt = null;
-    ResultSet rs = null;
-    try {
-      ArrayList<HashMap<String, String>> objects = new ArrayList<>();
+	public ArrayList<HashMap<String, String>> selectMany(String query, Class<? extends DatabaseObject> objectClass) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			ArrayList<HashMap<String, String>> objects = new ArrayList<>();
 
-      System.out.println(query);
-      stmt = Database.getDatabaseConnection().createStatement();
-      rs = stmt.executeQuery(query);
+			System.out.println(query);
+			stmt = Database.getDatabaseConnection().createStatement();
+			rs = stmt.executeQuery(query);
 
-      while (rs.next()) {
-        HashMap<String, String> newObject = new HashMap<>();
-        Field[] fields = objectClass.getDeclaredFields();
-        for (Field field : fields) {
-          field.setAccessible(true);
-          newObject.put(field.getName(), rs.getString(field.getName()));
-        }
+			while (rs.next()) {
+				HashMap<String, String> newObject = new HashMap<>();
+				Field[] fields = objectClass.getDeclaredFields();
+				for (Field field : fields) {
+					field.setAccessible(true);
+					newObject.put(field.getName(), rs.getString(field.getName()));
+				}
 
-        objects.add(newObject);
-      }
+				objects.add(newObject);
+			}
 
-      rs.close();
-      rs = null;
-      stmt.close();
-      stmt = null;
+			rs.close();
+			rs = null;
+			stmt.close();
+			stmt = null;
 
-      return objects;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      Database.getInstance().close(rs);
-      Database.getInstance().close(stmt);
-    }
-    return null;
-  }
+			return objects;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Database.getInstance().close(rs);
+			Database.getInstance().close(stmt);
+		}
+		return null;
+	}
 
-  public int getNextId(Class<? extends DatabaseObject> objectClass) {
-    Statement stmt = null;
-    ResultSet rs = null;
-    try {
-      String tableName = objectClass.getSimpleName().toLowerCase();
-      String query = "select max(id) as id from " + tableName;
-      System.out.println(query);
+	public int getNextId(Class<? extends DatabaseObject> objectClass) {
+		Statement stmt = null;
+		ResultSet rs = null;
+		try {
+			String tableName = objectClass.getSimpleName().toLowerCase();
+			String query = "select max(id) as id from " + tableName;
+			System.out.println(query);
 
-      stmt = Database.getDatabaseConnection().createStatement();
-      rs = stmt.executeQuery(query);
+			stmt = Database.getDatabaseConnection().createStatement();
+			rs = stmt.executeQuery(query);
 
-      while (rs.next()) {
-        return rs.getInt("id") + 1;
-      }
+			while (rs.next()) {
+				return rs.getInt("id") + 1;
+			}
 
-      rs.close();
-      rs = null;
-      stmt.close();
-      stmt = null;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      Database.getInstance().close(rs);
-      Database.getInstance().close(stmt);
-    }
-    return 0;
-  }
+			rs.close();
+			rs = null;
+			stmt.close();
+			stmt = null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Database.getInstance().close(rs);
+			Database.getInstance().close(stmt);
+		}
+		return 0;
+	}
 
+	public <T extends DatabaseObject> ArrayList<T> all(Class<T> objectClass) {
+		String tableName = getTableName(objectClass);
+		ArrayList<T> list = fromList(selectMany("select * from " + tableName, objectClass), objectClass);
+		return list;
+	}
 
-  public <T extends DatabaseObject> ArrayList<T> all(Class<T> objectClass) {
-    String tableName = getTableName(objectClass);
-    ArrayList<T> list = fromList(selectMany("select * from " + tableName, objectClass), objectClass);
-    return list;
-  }
+	public <T extends DatabaseObject> ArrayList<T> select(String query, Class<T> objectClass) {
+		ArrayList<T> list = fromList(selectMany(query, objectClass), objectClass);
+		return list;
+	}
 
-  public <T extends DatabaseObject> ArrayList<T> select(String query, Class<T> objectClass) {
-    ArrayList<T> list = fromList(selectMany(query, objectClass), objectClass);
-    return list;
-  }
+	public <T extends DatabaseObject> ArrayList<T> fromList(ArrayList<HashMap<String, String>> list, Class<T> object) {
+		ArrayList<T> out = new ArrayList<>();
+		for (HashMap<String, String> hashMap : list) {
 
-  public <T extends DatabaseObject> ArrayList<T> fromList(ArrayList<HashMap<String, String>> list,
-      Class<T> object) {
-    ArrayList<T> out = new ArrayList<>();
-    for (HashMap<String, String> hashMap : list) {
+			T t;
+			try {
+				t = object.newInstance();
+				System.err.println(hashMap);
+				toObject(hashMap, t);
+				out.add(t);
+			} catch (InstantiationException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
+		return out;
+	}
 
-      T t;
-      try {
-        t = object.newInstance();
-        System.err.println(hashMap);
-        toObject(hashMap, t);
-        out.add(t);
-      } catch (InstantiationException | IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    }
-    return out;
-  }
+	public <T extends DatabaseObject> T find(Class<T> objectClass, int id) {
+		T t = null;
+		try {
+			t = objectClass.newInstance();
+			HashMap<String, String> hashMap = find(id, objectClass);
+			toObject(hashMap, t);
 
+		} catch (InstantiationException | IllegalAccessException e) {
+			e.printStackTrace();
+		}
+		return t;
+	}
 
-  public <T extends DatabaseObject> T find(Class<T> objectClass, int id) {
-    T t = null;
-    try {
-      t = objectClass.newInstance();
-      HashMap<String, String> hashMap = find(id, objectClass);
-      toObject(hashMap, t);
+	public String getTableName(Class<? extends DatabaseObject> objectClass) {
+		return objectClass.getSimpleName().toLowerCase();
+	}
 
-    } catch (InstantiationException | IllegalAccessException e) {
-      e.printStackTrace();
-    }
-    return t;
-  }
+	public void save(DatabaseObject object) {
+		Statement stmt = null;
+		String query = "";
+		int id = 0;
+		try {
+			Field field = object.getClass().getDeclaredField("id");
+			field.setAccessible(true);
+			id = ((SimpleIntegerProperty) field.get(object)).intValue();
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			e.printStackTrace();
+		}
+		if (this.exists(id, object)) {
+			query = this.getUpdateQuery(object);
+		} else {
+			query = this.getInsetQuery(object);
+		}
 
-  public String getTableName(Class<? extends DatabaseObject> objectClass) {
-    return objectClass.getSimpleName().toLowerCase();
-  }
+		try {
+			stmt = Database.getDatabaseConnection().createStatement();
+			stmt.executeUpdate(query);
+			stmt.close();
+			stmt = null;
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Database.getInstance().close(stmt);
+		}
 
-  public void save(DatabaseObject object) {
-    Statement stmt = null;
-    String query = "";
-    int id = 0;
-    try {
-      Field field = object.getClass().getDeclaredField("id");
-      field.setAccessible(true);
-      id = ((SimpleIntegerProperty) field.get(object)).intValue();
-    } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
-        | SecurityException e) {
-      e.printStackTrace();
-    }
-    if (this.exists(id, object)) {
-      query = this.getUpdateQuery(object);
-    } else {
-      query = this.getInsetQuery(object);
-    }
+		System.out.println(query);
+	}
 
-    try {
-      stmt = Database.getDatabaseConnection().createStatement();
-      stmt.executeUpdate(query);
-      stmt.close();
-      stmt = null;
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      Database.getInstance().close(stmt);
-    }
+	public boolean exists(int id, DatabaseObject object) {
+		Statement stmt = null;
+		ResultSet rs = null;
 
-    System.out.println(query);
-  }
+		String query = "select count(*) from " + getTableName(object.getClass()) + " where id = " + id;
+		try {
+			System.out.println(query);
+			stmt = Database.getDatabaseConnection().createStatement();
+			rs = stmt.executeQuery(query);
+			rs.next();
 
-  public boolean exists(int id, DatabaseObject object) {
-    Statement stmt = null;
-    ResultSet rs = null;
+			int count = rs.getInt("count");
 
-    String query = "select count(*) from " + getTableName(object.getClass()) + " where id = " + id;
-    try {
-      System.out.println(query);
-      stmt = Database.getDatabaseConnection().createStatement();
-      rs = stmt.executeQuery(query);
-      rs.next();
+			rs.close();
+			rs = null;
+			stmt.close();
+			stmt = null;
 
-      int count = rs.getInt("count");
+			if (count >= 1) {
+				return true;
+			} else {
+				return false;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			Database.getInstance().close(rs);
+			Database.getInstance().close(stmt);
+		}
+		return false;
+	}
 
-      rs.close();
-      rs = null;
-      stmt.close();
-      stmt = null;
+	public void toObject(HashMap<String, String> map, DatabaseObject object) {
+		Field[] fields = object.getClass().getDeclaredFields();
+		try {
+			for (Field field : fields) {
+				field.setAccessible(true);
+				Object fieldType = field.get(object);
+				String name = field.getName();
+				if (fieldType instanceof SimpleIntegerProperty) {
+					field.set(object, new SimpleIntegerProperty(Integer.parseInt(map.get(name))));
+				} else if (fieldType instanceof SimpleStringProperty) {
+					field.set(object, new SimpleStringProperty(map.get(name)));
+				} else if (fieldType instanceof Date) {
+					java.sql.Date sqlDate = new java.sql.Date(0).valueOf(map.get(name));
+					Date date = new Date(sqlDate.getTime());
+					field.set(object, date);
+				}
+			}
+		} catch (NumberFormatException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		}
+	}
 
-      if (count >= 1) {
-        return true;
-      } else {
-        return false;
-      }
-    } catch (SQLException e) {
-      e.printStackTrace();
-    } finally {
-      Database.getInstance().close(rs);
-      Database.getInstance().close(stmt);
-    }
-    return false;
-  }
+	private String getInsetQuery(DatabaseObject object) {
+		String query = "insert into " + getTableName(object.getClass()) + " (";
 
-  public void toObject(HashMap<String, String> map, DatabaseObject object) {
-    Field[] fields = object.getClass().getDeclaredFields();
-    try {
-      for (Field field : fields) {
-        field.setAccessible(true);
-        Object fieldType = field.get(object);
-        String name = field.getName();
-        if (fieldType instanceof SimpleIntegerProperty) {
-          field.set(object, new SimpleIntegerProperty(Integer.parseInt(map.get(name))));
-        } else if (fieldType instanceof SimpleStringProperty) {
-          field.set(object, new SimpleStringProperty(map.get(name)));
-        }
-      }
-    } catch (NumberFormatException e) {
-      e.printStackTrace();
-    } catch (IllegalArgumentException e) {
-      e.printStackTrace();
-    } catch (IllegalAccessException e) {
-      e.printStackTrace();
-    }
-  }
+		Field[] fields = object.getClass().getDeclaredFields();
+		int numberOfFields = fields.length;
+		int i = 0;
+		for (Field field : fields) {
+			i++;
+			query = query + field.getName();
+			if (i < numberOfFields) {
+				query = query + ", ";
+			}
+		}
 
-  private String getInsetQuery(DatabaseObject object) {
-    String query = "insert into " + getTableName(object.getClass()) + " (";
+		query = query + ") values (";
 
-    Field[] fields = object.getClass().getDeclaredFields();
-    int numberOfFields = fields.length;
-    int i = 0;
-    for (Field field : fields) {
-      i++;
-      query = query + field.getName();
-      if (i < numberOfFields) {
-        query = query + ", ";
-      }
-    }
+		i = 0;
+		for (Field field : fields) {
+			i++;
+			String fieldType = field.getType().getSimpleName().toLowerCase();
 
-    query = query + ") values (";
+			try {
+				field.setAccessible(true);
+				if (fieldType.contains("int")) {
+					field.get(object);
+					int integer = ((SimpleIntegerProperty) field.get(object)).intValue();
+					query = query + integer;
+				} else if (fieldType.contains("string")) {
+					String string = ((SimpleStringProperty) field.get(object)).getValue();
+					query = query + "'" + string + "'";
+				} else if (fieldType.contains("date")) {
+					java.sql.Date sqlDate = new java.sql.Date(((Date) field.get(object)).getTime());
+					query = query + "'" + sqlDate + "'";
+				}
 
-    i = 0;
-    for (Field field : fields) {
-      i++;
-      String fieldType = field.getType().getSimpleName().toLowerCase();
+				if (i < numberOfFields) {
+					query = query + ", ";
+				}
 
-      try {
-        field.setAccessible(true);
-        if (fieldType.contains("int")) {
-          field.get(object);
-          int integer = ((SimpleIntegerProperty) field.get(object)).intValue();
-          query = query + integer;
-        } else if (fieldType.contains("string")) {
-          String string = ((SimpleStringProperty) field.get(object)).getValue();
-          query = query + "'" + string + "'";
-        }
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
 
-        if (i < numberOfFields) {
-          query = query + ", ";
-        }
+		query = query + ");";
+		return query;
+	}
 
-      } catch (IllegalArgumentException | IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    }
+	private String getUpdateQuery(DatabaseObject object) {
+		String query = "update " + getTableName(object.getClass()) + " set ";
 
-    query = query + ");";
-    return query;
-  }
+		Field[] fields = object.getClass().getDeclaredFields();
+		int numberOfFields = fields.length;
+		int i = 0;
 
-  private String getUpdateQuery(DatabaseObject object) {
-    String query = "update " + getTableName(object.getClass()) + " set ";
+		i = 0;
+		for (Field field : fields) {
+			field.setAccessible(true);
+			i++;
+			String fieldType = field.getType().getSimpleName().toLowerCase();
 
-    Field[] fields = object.getClass().getDeclaredFields();
-    int numberOfFields = fields.length;
-    int i = 0;
+			query = query + field.getName();
+			query = query + " = ";
+			try {
+				if (fieldType.contains("int")) {
+					int integer = ((SimpleIntegerProperty) field.get(object)).intValue();
+					query = query + integer;
+				} else if (fieldType.contains("string")) {
+					String string = ((SimpleStringProperty) field.get(object)).getValue();
+					query = query + "'" + string + "'";
+				} else if (fieldType.contains("date")) {
+					java.sql.Date sqlDate = new java.sql.Date(((Date) field.get(object)).getTime());
+					query = query + "'" + sqlDate + "'";
+				}
 
-    i = 0;
-    for (Field field : fields) {
-      field.setAccessible(true);
-      i++;
-      String fieldType = field.getType().getSimpleName().toLowerCase();
+				if (i < numberOfFields) {
+					query = query + ", ";
+				}
 
-      query = query + field.getName();
-      query = query + " = ";
-      try {
-        if (fieldType.contains("int")) {
-          int integer = ((SimpleIntegerProperty) field.get(object)).intValue();
-          query = query + integer;
-        } else if (fieldType.contains("string")) {
-          String string = ((SimpleStringProperty) field.get(object)).getValue();
-          query = query + "'" + string + "'";
-        }
+			} catch (IllegalArgumentException | IllegalAccessException e) {
+				e.printStackTrace();
+			}
+		}
 
-        if (i < numberOfFields) {
-          query = query + ", ";
-        }
-
-      } catch (IllegalArgumentException | IllegalAccessException e) {
-        e.printStackTrace();
-      }
-    }
-
-    try {
-      query = query + " where id = "
-          + ((SimpleIntegerProperty) object.getClass().getDeclaredField("id").get(object)).intValue() + ";";
-    } catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException
-        | SecurityException e) {
-      e.printStackTrace();
-    }
-    return query;
-  }
+		try {
+			query = query + " where id = "
+					+ ((SimpleIntegerProperty) object.getClass().getDeclaredField("id").get(object)).intValue() + ";";
+		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
+			e.printStackTrace();
+		}
+		return query;
+	}
 }
