@@ -6,37 +6,38 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class PersonCredentials implements DatabaseObject {
 
-  private SimpleIntegerProperty id = new SimpleIntegerProperty();
-  private SimpleStringProperty password = new SimpleStringProperty();
+	private SimpleIntegerProperty id = new SimpleIntegerProperty();
+	private SimpleStringProperty password = new SimpleStringProperty();
 
-  public PersonCredentials(Integer id, String password) {
-    this.id.set(id);
-    this.password.set(password);
-  }
+	public PersonCredentials(Integer id, String password) {
+		this.id.set(id);
+		this.password.set(password);
+	}
 
-  public PersonCredentials() {}
+	public PersonCredentials() {
+	}
 
-  public SimpleIntegerProperty idProperty() {
-    return id;
-  }
+	public SimpleIntegerProperty idProperty() {
+		return id;
+	}
 
-  public Integer getId() {
-    return idProperty().get();
-  }
+	public Integer getId() {
+		return idProperty().get();
+	}
 
-  public void setId(Integer id) {
-    idProperty().set(id);
-  }
+	public void setId(Integer id) {
+		idProperty().set(id);
+	}
 
-  public SimpleStringProperty passwordProperty() {
-    return password;
-  }
+	public SimpleStringProperty passwordProperty() {
+		return password;
+	}
 
-  public String getPassword() {
-    return passwordProperty().get();
-  }
+	public String getPassword() {
+		return passwordProperty().get();
+	}
 
-  public void setPassword(String password) {
-    passwordProperty().set(password);
-  }
+	public void setPassword(String password) {
+		passwordProperty().set(password);
+	}
 }

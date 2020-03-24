@@ -12,64 +12,65 @@ import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 
 public final class SceneManager {
-  private static volatile SceneManager instance;
+	private static volatile SceneManager instance;
 
-  private HashMap<String, Pane> screenMap = new HashMap<>();
-  private Stage stage;
+	private HashMap<String, Pane> screenMap = new HashMap<>();
+	private Stage stage;
 
-  private SceneManager() {}
+	private SceneManager() {
+	}
 
-  public static SceneManager getInstance() {
-    if (instance == null) {
-      synchronized (SceneManager.class) {
-        if (instance == null) {
-          instance = new SceneManager();
-        }
-      }
-    }
-    return instance;
-  }
+	public static SceneManager getInstance() {
+		if (instance == null) {
+			synchronized (SceneManager.class) {
+				if (instance == null) {
+					instance = new SceneManager();
+				}
+			}
+		}
+		return instance;
+	}
 
-  public static SceneManager getInstance(Stage stage) {
-    if (instance == null) {
-      synchronized (SceneManager.class) {
-        if (instance == null) {
-          instance = new SceneManager();
-          instance.stage = stage;
-        }
-      }
-    }
-    return instance;
-  }
+	public static SceneManager getInstance(Stage stage) {
+		if (instance == null) {
+			synchronized (SceneManager.class) {
+				if (instance == null) {
+					instance = new SceneManager();
+					instance.stage = stage;
+				}
+			}
+		}
+		return instance;
+	}
 
-  public void add(String name, Pane pane) {
-    screenMap.put(name, pane);
-  }
+	public void add(String name, Pane pane) {
+		screenMap.put(name, pane);
+	}
 
-  public void remove(String name) {
-    screenMap.remove(name);
-  }
+	public void remove(String name) {
+		screenMap.remove(name);
+	}
 
-  public void select(String name) {
-    Pane pane = screenMap.get(name);
-    Scene scene = new Scene(pane);
-    stage.setScene(scene);
-    stage.sizeToScene();
-  }
+	public void select(String name) {
+		Pane pane = screenMap.get(name);
+		Scene scene = new Scene(pane);
+		stage.setScene(scene);
+		stage.sizeToScene();
+	}
 
-  public void loadAuth() {
-    VBox login = new LoginView();
-    this.add("login", login);
+	public void loadAuth() {
+		VBox login = new LoginView();
+		this.add("login", login);
 
-    VBox register = new RegisterView();
-    this.add("register", register);
-  }
+		VBox register = new RegisterView();
+		this.add("register", register);
+	}
 
-  public void load() {
-    SplitPane mainContent = new MainSplit();
-    BorderPane main = new BorderPane();
-    main.setCenter(mainContent);
-    this.add("main", main);
-  }
+	public void load() {
+		SplitPane mainContent = new MainSplit();
+		BorderPane main = new BorderPane();
+		main.setCenter(mainContent);
+		this.add("main", main);
+	}
 
 }

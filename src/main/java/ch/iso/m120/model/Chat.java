@@ -6,38 +6,39 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Chat implements DatabaseObject {
 
-  private SimpleIntegerProperty id = new SimpleIntegerProperty();
-  private SimpleStringProperty name = new SimpleStringProperty();
+	private SimpleIntegerProperty id = new SimpleIntegerProperty();
+	private SimpleStringProperty name = new SimpleStringProperty();
 
-  public Chat(Integer id, String name) {
-    super();
-    this.setId(id);
-    this.setName(name);;
-  }
+	public Chat(Integer id, String name) {
+		super();
+		this.setId(id);
+		this.setName(name);
+	}
 
-  public Chat() {}
+	public Chat() {
+	}
 
-  public SimpleIntegerProperty idProperty() {
-    return id;
-  }
+	public SimpleIntegerProperty idProperty() {
+		return id;
+	}
 
-  public Integer getId() {
-    return idProperty().get();
-  }
+	public Integer getId() {
+		return idProperty().get();
+	}
 
-  private void setId(Integer id) {
-    idProperty().set(id);
-  }
+	private void setId(Integer id) {
+		idProperty().set(id);
+	}
 
-  public SimpleStringProperty nameProperty() {
-    return name;
-  }
+	public SimpleStringProperty nameProperty() {
+		return name;
+	}
 
-  public String getName() {
-    return nameProperty().get();
-  }
+	public String getName() {
+		return nameProperty().get();
+	}
 
-  public void setName(String name) {
-    nameProperty().set(name);
-  }
+	public void setName(String name) {
+		nameProperty().set(name);
+	}
 }

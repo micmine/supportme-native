@@ -1,9 +1,3 @@
-/*
- * CreateChatMessage.java
- *
- * Copyright by proserium, all rights reserved.
- * MIT License: https://mit-license.org
- */
 package ch.iso.m120.controller;
 
 import java.util.Date;
@@ -30,7 +24,7 @@ public class CreateChatMessage implements EventHandler {
 
 		DatabaseEngine.getInstance().save(message);
 		field.clear();
-		
+
 		General.getInstance().getMessageListView().reload();
 	}
 

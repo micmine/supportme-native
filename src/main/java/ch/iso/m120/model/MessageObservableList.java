@@ -2,33 +2,28 @@ package ch.iso.m120.model;
 
 import java.util.ArrayList;
 
-import ch.iso.m120.model.database.Database;
 import ch.iso.m120.model.database.DatabaseEngine;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.TableView;
 
 public class MessageObservableList {
-	
+
 	private static volatile MessageObservableList instance;
 
-	  private static String connectionString =
-	      "jdbc:postgresql://localhost/supportme?allowPublicKeyRetrieval=true&useSSL=false";
-	  private static String connectionUser = "postgres";
-	  private static String connectionPassword = "pass";
+	private MessageObservableList() {
+	}
 
-	  private MessageObservableList() {}
-
-	  public static MessageObservableList getInstance() {
-	    if (instance == null) {
-	      synchronized (MessageObservableList.class) {
-	        if (instance == null) {
-	          instance = new MessageObservableList();
-	        }
-	      }
-	    }
-	    return instance;
-	  }
+	public static MessageObservableList getInstance() {
+		if (instance == null) {
+			synchronized (MessageObservableList.class) {
+				if (instance == null) {
+					instance = new MessageObservableList();
+				}
+			}
+		}
+		return instance;
+	}
 
 	private final ObservableList<Message> data = FXCollections.observableArrayList();
 	private TableView<Message> table = null;

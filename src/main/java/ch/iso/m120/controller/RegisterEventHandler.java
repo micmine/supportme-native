@@ -12,10 +12,10 @@ public class RegisterEventHandler implements EventHandler<ActionEvent> {
 	public void handle(ActionEvent event) {
 		Button sumit = (Button) event.getSource();
 		VBox form = (VBox) sumit.getParent();
-		TextField usernameField =  (TextField) form.getChildren().get(1);
-		TextField emailField =  (TextField) form.getChildren().get(3);
-		TextField passwordField =  (TextField) form.getChildren().get(5);
-		TextField password2Field =  (TextField) form.getChildren().get(7);
+		TextField usernameField = (TextField) form.getChildren().get(1);
+		TextField emailField = (TextField) form.getChildren().get(3);
+		TextField passwordField = (TextField) form.getChildren().get(5);
+		TextField password2Field = (TextField) form.getChildren().get(7);
 
 		String username = usernameField.getCharacters().toString();
 		String email = emailField.getCharacters().toString();

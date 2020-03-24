@@ -6,52 +6,55 @@ import javafx.beans.property.SimpleStringProperty;
 
 public class Person implements DatabaseObject {
 
-  private SimpleIntegerProperty id = new SimpleIntegerProperty();
-  private SimpleStringProperty name = new SimpleStringProperty();
-  private SimpleStringProperty email = new SimpleStringProperty();
+	private SimpleIntegerProperty id = new SimpleIntegerProperty();
+	private SimpleStringProperty name = new SimpleStringProperty();
+	private SimpleStringProperty email = new SimpleStringProperty();
 
-  public Person(Integer id, String name, String email) {
-    super();
-    this.setId(id);
-    this.setName(name);;
-    this.setEmail(email);;
-  }
+	public Person(Integer id, String name, String email) {
+		super();
+		this.setId(id);
+		this.setName(name);
+		;
+		this.setEmail(email);
+		;
+	}
 
-  public Person() {}
+	public Person() {
+	}
 
-  public SimpleIntegerProperty idProperty() {
-    return id;
-  }
+	public SimpleIntegerProperty idProperty() {
+		return id;
+	}
 
-  public Integer getId() {
-    return idProperty().get();
-  }
+	public Integer getId() {
+		return idProperty().get();
+	}
 
-  private void setId(Integer id) {
-    idProperty().set(id);
-  }
+	private void setId(Integer id) {
+		idProperty().set(id);
+	}
 
-  public SimpleStringProperty nameProperty() {
-    return name;
-  }
+	public SimpleStringProperty nameProperty() {
+		return name;
+	}
 
-  public String getName() {
-    return nameProperty().get();
-  }
+	public String getName() {
+		return nameProperty().get();
+	}
 
-  public void setName(String name) {
-    nameProperty().set(name);
-  }
+	public void setName(String name) {
+		nameProperty().set(name);
+	}
 
-  public SimpleStringProperty emailProperty() {
-    return email;
-  }
+	public SimpleStringProperty emailProperty() {
+		return email;
+	}
 
-  public String getEmail() {
-    return emailProperty().get();
-  }
+	public String getEmail() {
+		return emailProperty().get();
+	}
 
-  public void setEmail(String email) {
-    emailProperty().set(email);
-  }
+	public void setEmail(String email) {
+		emailProperty().set(email);
+	}
 }

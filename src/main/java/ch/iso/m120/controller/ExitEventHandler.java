@@ -8,15 +8,15 @@ import javafx.event.EventHandler;
 
 public class ExitEventHandler implements EventHandler<ActionEvent> {
 
-  @Override
-  public void handle(ActionEvent event) {
+	@Override
+	public void handle(ActionEvent event) {
 
-    Platform.exit();
-    try {
-      Database.getDatabaseConnection().close();
-    } catch (SQLException e) {
-      e.printStackTrace();
-    }
-  }
+		Platform.exit();
+		try {
+			Database.getDatabaseConnection().close();
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
 
 }
