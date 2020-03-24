@@ -25,12 +25,13 @@ public class CreateChatMessage implements EventHandler {
 
 	@Override
 	public void handle(Event arg0) {
-		System.out.println(General.getInstance().getSelected().getId() + " : " + field.getText());
 		Message message = new Message(DatabaseEngine.getInstance().getNextId(Message.class),
 				General.getInstance().getSelected().getId(), field.getText(), new Date());
 
 		DatabaseEngine.getInstance().save(message);
 		field.clear();
+		
+		General.getInstance().getMessageListView().reload();
 	}
 
 }

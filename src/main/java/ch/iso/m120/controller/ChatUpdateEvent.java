@@ -8,16 +8,13 @@ import javafx.beans.value.ObservableValue;
 
 public class ChatUpdateEvent implements ChangeListener<Chat> {
 
-  @Override
-  public void changed(ObservableValue<? extends Chat> observable, Chat oldValue,
-      Chat newValue) {
-    System.out.println("New selection: " + newValue.getName());
+	@Override
+	public void changed(ObservableValue<? extends Chat> observable, Chat oldValue, Chat newValue) {
+		General.getInstance().setSelected(newValue);
+		General.getInstance().getMessageListView().reload();
 
-    General.getInstance().setSelected(newValue);
-    General.getInstance().getMessageListView().reload();
+		// reload left
 
-    // reload left
-
-  }
+	}
 
 }

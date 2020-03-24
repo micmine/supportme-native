@@ -19,11 +19,12 @@ public class MessageListView extends VBox {
 
   public void reload() {
     MessageListView.clearConstraints(this);
+    MessageObservableList.getInstance().loadData();
 
-    MessageObservableList.loadData();
+    ObservableList<Message> messages = MessageObservableList.getInstance().get();
 
-    ObservableList<Message> messages = MessageObservableList.get();
-
+    this.getChildren().clear();
+    
     for (Message message : messages) {
       this.getChildren().add(new Text(message.getValue()));
     }
