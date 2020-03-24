@@ -1,3 +1,9 @@
 #!/bin/bash
 
-docker start postgres-supportme-native && rm -rf build/ && gradle clean run
+if [ -z $1 ]; then
+	if [ "$1" == "--clean" ];then
+		rm -rf ./build
+	fi
+fi
+
+docker start postgres-supportme-native && gradle clean eclipse run
