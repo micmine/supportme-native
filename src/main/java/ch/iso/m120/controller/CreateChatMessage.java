@@ -19,13 +19,17 @@ public class CreateChatMessage implements EventHandler {
 
 	@Override
 	public void handle(Event arg0) {
-		Message message = new Message(DatabaseEngine.getInstance().getNextId(Message.class),
-				General.getInstance().getSelected().getId(), field.getText(), new Date());
+		try {
+			Message message = new Message(DatabaseEngine.getInstance().getNextId(Message.class),
+					General.getInstance().getSelected().getId(), field.getText(), new Date());
 
-		DatabaseEngine.getInstance().save(message);
-		field.clear();
+			DatabaseEngine.getInstance().save(message);
+			field.clear();
 
-		General.getInstance().getMessageListView().reload();
+			General.getInstance().getMessageListView().reload();
+		} catch (NullPointerException e) {
+			System.err.println("No Chat selected");
+		}
 	}
 
 }

@@ -17,5 +17,7 @@ public class ChatSplit extends SplitPane {
 
 		ChatForm chatForm = new ChatForm();
 		this.getItems().add(chatForm);
+		
+		this.getDividers().get(0).setPosition(0.05);
 	}
 }

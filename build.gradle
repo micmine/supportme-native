@@ -12,15 +12,11 @@ javafx {
 }
 
 repositories {
-    // Use jcenter for resolving dependencies.
-    // You can declare any Maven/Ivy/file repository here.
     jcenter()
     
 }
 
 dependencies {
-    // This dependency is used by the application.
-    implementation 'com.google.guava:guava:27.1-jre'
     compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4'
     compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4'
     // Use JUnit test framework
