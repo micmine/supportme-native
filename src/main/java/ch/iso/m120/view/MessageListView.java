@@ -22,7 +22,11 @@ public class MessageListView extends VBox {
 		this.getChildren().clear();
 
 		for (Message message : messages) {
-			this.getChildren().add(new Text(message.getValue()));
+			Text text = new Text(message.getValue());
+			
+			text.getStyleClass().setAll("p", "bg-success");
+			
+			this.getChildren().add(text);
 		}
 	}
 

@@ -7,7 +7,7 @@ plugins {
 }
 
 javafx {
-    version = "11.0.2"
+    version = "14"
     modules = [ 'javafx.controls' ]
 }
 
@@ -21,8 +21,8 @@ repositories {
 dependencies {
     // This dependency is used by the application.
     implementation 'com.google.guava:guava:27.1-jre'
+    compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4'
     compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4'
-
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
 }

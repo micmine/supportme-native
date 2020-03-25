@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
+import org.kordamp.bootstrapfx.scene.layout.Panel;
 
 public final class SceneManager {
 	private static volatile SceneManager instance;
@@ -52,8 +53,10 @@ public final class SceneManager {
 	}
 
 	public void select(String name) {
-		Pane pane = screenMap.get(name);
-		Scene scene = new Scene(pane);
+		Panel panel = new Panel();
+		panel.setBody(screenMap.get(name));
+		Scene scene = new Scene(panel);
+		scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 		stage.setScene(scene);
 		stage.sizeToScene();
 	}

@@ -17,6 +17,7 @@ public class ChatSelector extends ListView<Chat> {
 
 				if (empty || item == null) {
 					setText(null);
+					getStyleClass().add("h3");
 				} else {
 					setText(item.getName());
 				}
@@ -25,7 +26,9 @@ public class ChatSelector extends ListView<Chat> {
 
 		this.getSelectionModel().selectedItemProperty().addListener(new ChatUpdateEvent());
 		ChatObservableList.loadData();
+
 		this.getItems().setAll(ChatObservableList.get());
+		
 		General.getInstance().setSelected(this.getItems().get(0));
 
 		General.getInstance().setSelected(this.getSelectionModel().getSelectedItem());

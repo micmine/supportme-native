@@ -157,7 +157,7 @@ public class DatabaseEngine {
 
 	public <T extends DatabaseObject> ArrayList<T> all(Class<T> objectClass) {
 		String tableName = getTableName(objectClass);
-		ArrayList<T> list = fromList(selectMany("select * from " + tableName, objectClass), objectClass);
+		ArrayList<T> list = fromList(selectMany("select * from " + tableName + ";", objectClass), objectClass);
 		return list;
 	}
 
@@ -173,7 +173,7 @@ public class DatabaseEngine {
 			T t;
 			try {
 				t = object.newInstance();
-				System.err.println(hashMap);
+				//System.err.println(hashMap);
 				toObject(hashMap, t);
 				out.add(t);
 			} catch (InstantiationException | IllegalAccessException e) {

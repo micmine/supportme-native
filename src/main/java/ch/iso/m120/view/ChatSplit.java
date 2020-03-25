@@ -6,6 +6,9 @@ import javafx.scene.layout.VBox;
 
 public class ChatSplit extends SplitPane {
 	public ChatSplit() {
+		
+		this.getStyleClass().add("panel-primary");
+		
 		this.setOrientation(Orientation.VERTICAL);
 		this.setId("chatSplit");
 
