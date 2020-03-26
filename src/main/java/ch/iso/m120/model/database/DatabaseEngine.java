@@ -1,6 +1,7 @@
 package ch.iso.m120.model.database;
 
 import java.lang.reflect.Field;
+import java.lang.reflect.InvocationTargetException;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -172,11 +173,11 @@ public class DatabaseEngine {
 
 			T t;
 			try {
-				t = object.newInstance();
+				t = object.getDeclaredConstructor().newInstance();
 				//System.err.println(hashMap);
 				toObject(hashMap, t);
 				out.add(t);
-			} catch (InstantiationException | IllegalAccessException e) {
+			} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 				e.printStackTrace();
 			}
 		}
@@ -186,11 +187,11 @@ public class DatabaseEngine {
 	public <T extends DatabaseObject> T find(Class<T> objectClass, int id) {
 		T t = null;
 		try {
-			t = objectClass.newInstance();
+			t = objectClass.getDeclaredConstructor().newInstance();
 			HashMap<String, String> hashMap = find(id, objectClass);
 			toObject(hashMap, t);
 
-		} catch (InstantiationException | IllegalAccessException e) {
+		} catch (InstantiationException | IllegalAccessException | IllegalArgumentException | InvocationTargetException | NoSuchMethodException | SecurityException e) {
 			e.printStackTrace();
 		}
 		return t;
