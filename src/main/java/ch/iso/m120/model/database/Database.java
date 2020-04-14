@@ -8,6 +8,7 @@ import java.sql.Statement;
 public class Database {
 
 	private static volatile Database instance;
+	private static volatile Connection conn;
 
 	private static String connectionString = "jdbc:postgresql://localhost/supportme?allowPublicKeyRetrieval=true&useSSL=false";
 	private static String connectionUser = "postgres";
@@ -21,21 +22,23 @@ public class Database {
 			synchronized (Database.class) {
 				if (instance == null) {
 					instance = new Database();
+					try {
+						Class.forName("org.postgresql.Driver");
+						conn = DriverManager.getConnection(connectionString, connectionUser, connectionPassword);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+
 				}
 			}
 		}
 		return instance;
 	}
 
-	public static Connection getDatabaseConnection() {
+	public Connection getDatabaseConnection() {
 		try {
-			Class.forName("org.postgresql.Driver");
-
-			Connection conn = DriverManager.getConnection(connectionString, connectionUser, connectionPassword);
-
 			return conn;
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return null;

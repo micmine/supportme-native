@@ -34,7 +34,7 @@ public final class Auth {
 			int id = this.getId(username);
 
 			String query = "select password from personcredentials where id = " + id + " limit 1;";
-			Statement stmt = Database.getDatabaseConnection().createStatement();
+			Statement stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 
 			if (rs.next() != false) {
@@ -80,7 +80,7 @@ public final class Auth {
 		try {
 			String query = "select id from person where name = '" + username + "' limit 1";
 			Statement stmt;
-			stmt = Database.getDatabaseConnection().createStatement();
+			stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			ResultSet rs = stmt.executeQuery(query);
 			int id = 0;
 			while (rs.next()) {
@@ -90,7 +90,6 @@ public final class Auth {
 			stmt.close();
 			return id;
 		} catch (SQLException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		return 0;

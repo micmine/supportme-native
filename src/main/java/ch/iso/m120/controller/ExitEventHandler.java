@@ -10,13 +10,13 @@ public class ExitEventHandler implements EventHandler<ActionEvent> {
 
 	@Override
 	public void handle(ActionEvent event) {
-
-		Platform.exit();
 		try {
-			Database.getDatabaseConnection().close();
+			Database.getInstance().getDatabaseConnection().close();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+
+		Platform.exit();
 	}
 
 }

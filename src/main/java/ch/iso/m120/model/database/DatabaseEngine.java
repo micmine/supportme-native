@@ -35,7 +35,7 @@ public class DatabaseEngine {
 
 		try {
 			System.out.println(query);
-			stmt = Database.getDatabaseConnection().createStatement();
+			stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			rs = stmt.executeQuery(query);
 			rs.next();
 
@@ -67,7 +67,7 @@ public class DatabaseEngine {
 		try {
 			String query = "select * from " + getTableName(objectClass) + " where id = " + id + ";";
 			System.out.println(query);
-			stmt = Database.getDatabaseConnection().createStatement();
+			stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			rs = stmt.executeQuery(query);
 			rs.next();
 
@@ -99,7 +99,7 @@ public class DatabaseEngine {
 			ArrayList<HashMap<String, String>> objects = new ArrayList<>();
 
 			System.out.println(query);
-			stmt = Database.getDatabaseConnection().createStatement();
+			stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -136,7 +136,7 @@ public class DatabaseEngine {
 			String query = "select max(id) as id from " + tableName;
 			System.out.println(query);
 
-			stmt = Database.getDatabaseConnection().createStatement();
+			stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			rs = stmt.executeQuery(query);
 
 			while (rs.next()) {
@@ -219,7 +219,7 @@ public class DatabaseEngine {
 		}
 
 		try {
-			stmt = Database.getDatabaseConnection().createStatement();
+			stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			stmt.executeUpdate(query);
 			stmt.close();
 			stmt = null;
@@ -239,7 +239,7 @@ public class DatabaseEngine {
 		String query = "select count(*) from " + getTableName(object.getClass()) + " where id = " + id;
 		try {
 			System.out.println(query);
-			stmt = Database.getDatabaseConnection().createStatement();
+			stmt = Database.getInstance().getDatabaseConnection().createStatement();
 			rs = stmt.executeQuery(query);
 			rs.next();
 
@@ -376,7 +376,7 @@ public class DatabaseEngine {
 
 		try {
 			query = query + " where id = "
-					+ ((SimpleIntegerProperty) object.getClass().getDeclaredField("id").get(object)).intValue() + ";";
+				+ ((SimpleIntegerProperty) object.getClass().getDeclaredField("id").get(object)).intValue() + ";";
 		} catch (IllegalArgumentException | IllegalAccessException | NoSuchFieldException | SecurityException e) {
 			e.printStackTrace();
 		}

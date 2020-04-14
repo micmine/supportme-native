@@ -15,6 +15,9 @@ then
 
 	tmux new-window -t $SESSION:3 -n 'shell'
 	tmux send-keys -t 'shell' ". ~/.bashrc" C-m
+
+	tmux new-window -t $SESSION:4 -n 'SQL'
+	tmux send-keys -t 'SQL' "docker exec -it postgres-supportme-native psql -U postgres" C-m
 fi
 
 tmux attach-session -t $SESSION:1
