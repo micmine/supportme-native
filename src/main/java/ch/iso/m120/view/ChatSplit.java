@@ -16,6 +16,6 @@ public class ChatSplit extends VBox {
 		ChatForm chatForm = new ChatForm();
 		this.getChildren().add(chatForm);
 
-		this.setVgrow(messageListView, Priority.ALWAYS);
+		setVgrow(messageListView, Priority.ALWAYS);
 	}
 }

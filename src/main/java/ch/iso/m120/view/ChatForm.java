@@ -12,7 +12,8 @@ public class ChatForm extends HBox {
 	public ChatForm() {
 		TextField textField = new TextField();
 		this.getChildren().add(textField);
-		this.setHgrow(textField, Priority.ALWAYS);
+		setHgrow(textField, Priority.ALWAYS);
+
 		Button button = new Button("send");
 		button.getStyleClass().setAll("btn","btn-primary");
 		this.getChildren().addAll(button);
