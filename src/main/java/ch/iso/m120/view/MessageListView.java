@@ -3,6 +3,8 @@ package ch.iso.m120.view;
 import ch.iso.m120.model.General;
 import ch.iso.m120.model.Message;
 import ch.iso.m120.model.MessageObservableList;
+import ch.iso.m120.model.Person;
+import ch.iso.m120.model.database.DatabaseEngine;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.VBox;
 import javafx.scene.text.Text;
@@ -22,10 +24,11 @@ public class MessageListView extends VBox {
 		this.getChildren().clear();
 
 		for (Message message : messages) {
-			Text text = new Text(message.getValue());
-			
+			String value = message.getValue() + " - " + DatabaseEngine.getInstance().find(Person.class, message.getPersonid()).getName();
+			Text text = new Text(value);
+
 			text.getStyleClass().setAll("p", "bg-success");
-			
+
 			this.getChildren().add(text);
 		}
 	}
