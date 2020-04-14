@@ -14,7 +14,7 @@ public class MainSplit extends SplitPane {
 		this.getItems().add(chatSelector);
 
 		// Chat view
-		SplitPane chatSplit = new ChatSplit();
+		ChatSplit chatSplit = new ChatSplit();
 		this.getItems().add(chatSplit);
 
 		this.getDividers().get(0).setPosition(0.05);
