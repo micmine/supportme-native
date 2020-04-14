@@ -1,15 +1,10 @@
-/*
- * ChatForm.java
- *
- * Copyright by proserium, all rights reserved.
- * MIT License: https://mit-license.org
- */
 package ch.iso.m120.view;
 
 import ch.iso.m120.controller.CreateChatMessage;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.Priority;
 
 public class ChatForm extends HBox {
 
@@ -17,7 +12,7 @@ public class ChatForm extends HBox {
 	public ChatForm() {
 		TextField textField = new TextField();
 		this.getChildren().add(textField);
-
+		this.setHgrow(textField, Priority.ALWAYS);
 		Button button = new Button("send");
 		button.getStyleClass().setAll("btn","btn-primary");
 		this.getChildren().addAll(button);
