@@ -1,29 +1,29 @@
-
 plugins {
-	id 'java'
-	id 'application'
-  	id 'org.openjfx.javafxplugin' version '0.0.8'
-	id 'eclipse'
+	id 'java';
+	id 'application';
+	id 'org.openjfx.javafxplugin' version '0.0.8';
+	id 'eclipse';
 }
 
 javafx {
-    version = "14"
-    modules = [ 'javafx.controls' ]
+	version = "14";
+	modules = [ 'javafx.controls' ];
 }
 
 repositories {
-    jcenter()
-    
+	jcenter();
 }
 
+defaultTasks 'eclipse', 'run';
+
 dependencies {
-    compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4'
-    compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4'
-    // Use JUnit test framework
-    testImplementation 'junit:junit:4.12'
+	compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4';
+	compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4';
+	// Use JUnit test framework
+	testImplementation 'junit:junit:4.12';
 }
 
 application {
-    // Define the main class for the application
-    mainClassName = 'ch.iso.m120.view.Main'
+	// Define the main class for the application
+	mainClassName = 'ch.iso.m120.view.Main';
 }
