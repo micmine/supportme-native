@@ -17,6 +17,7 @@ public final class SceneManager {
 
 	private HashMap<String, Pane> screenMap = new HashMap<>();
 	private Stage stage;
+	private String current;
 
 	private SceneManager() {
 	}
@@ -59,6 +60,7 @@ public final class SceneManager {
 		scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 		stage.setScene(scene);
 		stage.sizeToScene();
+		this.setCurrent(name);
 	}
 
 	public void loadAuth() {
@@ -76,4 +78,23 @@ public final class SceneManager {
 		this.add("main", main);
 	}
 
+
+
+	/**
+	 * Get current.
+	 *
+	 * @return current as String.
+	 */
+	public String getCurrent() {
+		return current;
+	}
+
+	/**
+	 * Set current.
+	 *
+	 * @param current the value to set.
+	 */
+	public void setCurrent(String current) {
+		this.current = current;
+	}
 }

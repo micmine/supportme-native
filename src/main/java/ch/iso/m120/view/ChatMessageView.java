@@ -8,7 +8,6 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextAlignment;
 
@@ -44,14 +43,14 @@ public class ChatMessageView extends HBox {
 
 		text.setX(20);
 		text.setY(20);
-		setMargin(text, new Insets(2, 1, 2, 2));
+		setMargin(text, new Insets(5, 5, 5, 5));
 
 		String margin = "-fx-padding: 2px;" +
 			"-fx-border-insets: 2px;" +
 			"-fx-background-insets: 2px;";
 		String corners = "-fx-background-size: 1200 900; " +
-			"-fx-background-radius: 30;" +
-			"-fx-border-radius: 30;" +
+			"-fx-background-radius: 5px;" +
+			"-fx-border-radius: 5px;" +
 			"-fx-border-width:0;" +
 			"-fx-border-color: " + background + ";";
 
