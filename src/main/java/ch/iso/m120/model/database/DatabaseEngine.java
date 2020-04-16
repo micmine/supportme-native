@@ -29,7 +29,7 @@ public class DatabaseEngine {
 		return instance;
 	}
 
-	public <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
+	protected <T> HashMap<String, String> selectOne(String query, DatabaseObject type) {
 		Statement stmt = null;
 		ResultSet rs = null;
 
@@ -61,7 +61,7 @@ public class DatabaseEngine {
 		return null;
 	}
 
-	public <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> objectClass) {
+	protected <T> HashMap<String, String> find(int id, Class<? extends DatabaseObject> objectClass) {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -92,7 +92,7 @@ public class DatabaseEngine {
 		return null;
 	}
 
-	public ArrayList<HashMap<String, String>> selectMany(String query, Class<? extends DatabaseObject> objectClass) {
+	protected ArrayList<HashMap<String, String>> selectMany(String query, Class<? extends DatabaseObject> objectClass) {
 		Statement stmt = null;
 		ResultSet rs = null;
 		try {
@@ -264,7 +264,7 @@ public class DatabaseEngine {
 		return false;
 	}
 
-	public void toObject(HashMap<String, String> map, DatabaseObject object) {
+	protected void toObject(HashMap<String, String> map, DatabaseObject object) {
 		Field[] fields = object.getClass().getDeclaredFields();
 		try {
 			for (Field field : fields) {
@@ -290,7 +290,7 @@ public class DatabaseEngine {
 		}
 	}
 
-	private String getInsetQuery(DatabaseObject object) {
+	protected String getInsetQuery(DatabaseObject object) {
 		String query = "insert into " + getTableName(object.getClass()) + " (";
 
 		Field[] fields = object.getClass().getDeclaredFields();
@@ -338,7 +338,7 @@ public class DatabaseEngine {
 		return query;
 	}
 
-	private String getUpdateQuery(DatabaseObject object) {
+	protected String getUpdateQuery(DatabaseObject object) {
 		String query = "update " + getTableName(object.getClass()) + " set ";
 
 		Field[] fields = object.getClass().getDeclaredFields();
