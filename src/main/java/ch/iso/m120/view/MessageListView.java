@@ -1,11 +1,8 @@
 package ch.iso.m120.view;
 
-import ch.iso.m120.controller.Auth;
 import ch.iso.m120.model.General;
 import ch.iso.m120.model.Message;
 import ch.iso.m120.model.MessageObservableList;
-import ch.iso.m120.model.Person;
-import ch.iso.m120.model.database.DatabaseEngine;
 import javafx.collections.ObservableList;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
@@ -21,8 +18,6 @@ public class MessageListView extends VBox {
 	public void reload() {
 		MessageListView.clearConstraints(this);
 		MessageObservableList.getInstance().loadData();
-
-		Auth.getInstance().setPerson(DatabaseEngine.getInstance().find(Person.class, 1));
 
 		ObservableList<Message> messages = MessageObservableList.getInstance().get();
 
