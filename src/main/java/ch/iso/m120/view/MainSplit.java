@@ -1,8 +1,8 @@
 package ch.iso.m120.view;
 
-import javafx.scene.control.SplitPane;
+import javafx.scene.layout.BorderPane;
 
-public class MainSplit extends SplitPane {
+public class MainSplit extends BorderPane {
 
 	public MainSplit() {
 		super();
@@ -11,12 +11,11 @@ public class MainSplit extends SplitPane {
 		// if user.hasPermission
 		// ChatSelector
 		ChatSelector chatSelector = new ChatSelector();
-		this.getItems().add(chatSelector);
+		this.setLeft(chatSelector);
 
 		// Chat view
 		ChatSplit chatSplit = new ChatSplit();
-		this.getItems().add(chatSplit);
+		this.setCenter(chatSplit);
 
-		this.getDividers().get(0).setPosition(0.05);
 	}
 }

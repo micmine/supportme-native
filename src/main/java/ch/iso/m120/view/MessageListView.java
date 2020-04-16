@@ -7,14 +7,10 @@ import ch.iso.m120.model.MessageObservableList;
 import ch.iso.m120.model.Person;
 import ch.iso.m120.model.database.DatabaseEngine;
 import javafx.collections.ObservableList;
-import javafx.geometry.Insets;
-import javafx.geometry.Pos;
-import javafx.scene.control.Label;
 import javafx.scene.layout.HBox;
-import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
-import javafx.scene.text.Text;
-import javafx.scene.text.TextAlignment;
 
 public class MessageListView extends VBox {
 
@@ -32,11 +28,15 @@ public class MessageListView extends VBox {
 
 		this.getChildren().clear();
 		this.setWidth(Double.MAX_VALUE);
-		this.setStyle("-fx-background-color: #dbdbdb;");
 
-		for (Message message : messages) {
+		Region spacer = new Region();
+		spacer.setPrefWidth(600);
+		HBox.setHgrow(spacer, Priority.ALWAYS);
+		this.getChildren().add(spacer);
+
+		messages.forEach(message -> {
 			this.getChildren().add(new ChatMessageView(message));
-		}
+		});
 	}
 
 }

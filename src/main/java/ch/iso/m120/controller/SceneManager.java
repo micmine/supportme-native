@@ -70,7 +70,7 @@ public final class SceneManager {
 	}
 
 	public void load() {
-		SplitPane mainContent = new MainSplit();
+		MainSplit mainContent = new MainSplit();
 		BorderPane main = new BorderPane();
 		main.setCenter(mainContent);
 		this.add("main", main);
