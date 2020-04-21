@@ -1,5 +1,7 @@
 # supportme-native
 
+![DEMO](demo.png)
+
 ## General conditions
 
 The goal is to build a support system for companies that want to move away from phone support or reduce it. But who needs a stable and fast system.
