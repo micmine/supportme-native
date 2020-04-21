@@ -14,9 +14,7 @@ public class Person implements DatabaseObject {
 		super();
 		this.setId(id);
 		this.setName(name);
-		;
 		this.setEmail(email);
-		;
 	}
 
 	public Person() {
