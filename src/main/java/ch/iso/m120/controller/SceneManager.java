@@ -60,9 +60,9 @@ public final class SceneManager {
 		scene.getStylesheets().add("org/kordamp/bootstrapfx/bootstrapfx.css");
 		stage.setScene(scene);
 		if (name.equals("main")) {
-			stage.setWidth(890);
-			stage.setMinWidth(890);
-			stage.setMaxWidth(890);
+			stage.setWidth(910);
+			stage.setMinWidth(910);
+			stage.setMaxWidth(910);
 
 			stage.setHeight(740);
 			stage.setMinHeight(740);
