@@ -19,6 +19,7 @@ defaultTasks 'eclipse', 'run';
 dependencies {
 	compile 'org.kordamp.bootstrapfx:bootstrapfx-core:0.2.4';
 	compile group: 'org.postgresql', name: 'postgresql', version: '9.3-1100-jdbc4';
+	compile group: 'at.favre.lib', name: 'bcrypt', version: '0.5.0';
 	// Use JUnit test framework
 	testImplementation 'junit:junit:4.12';
 }

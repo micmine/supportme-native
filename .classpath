@@ -31,6 +31,11 @@
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry sourcepath="/data/home/michael/.gradle/caches/modules-2/files-2.1/at.favre.lib/bcrypt/0.5.0/8325095dc20eb2b3bace67076e2b1463fc6b042e/bcrypt-0.5.0-sources.jar" kind="lib" path="/data/home/michael/.gradle/caches/modules-2/files-2.1/at.favre.lib/bcrypt/0.5.0/7559b1c6a901b67e489445e38a8fe748c9177057/bcrypt-0.5.0.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry sourcepath="/data/home/michael/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/14/ec1b89a8a68d35902b5d482fca2a455ad9b7bbed/javafx-controls-14-sources.jar" kind="lib" path="/data/home/michael/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-controls/14/2bcf5308eb78334efe29ae9fe6ce82e7018fbe42/javafx-controls-14-linux.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
@@ -52,6 +57,11 @@
 		</attributes>
 	</classpathentry>
 	<classpathentry sourcepath="/data/home/michael/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/14/fc155f0bb3992662e04f7d2107f2e9c7273c0d4f/javafx-base-14-sources.jar" kind="lib" path="/data/home/michael/.gradle/caches/modules-2/files-2.1/org.openjfx/javafx-base/14/4eddcdd8713831212ec9b396169959655cf0dc21/javafx-base-14.jar">
+		<attributes>
+			<attribute name="gradle_used_by_scope" value="main,test"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry sourcepath="/data/home/michael/.gradle/caches/modules-2/files-2.1/at.favre.lib/bytes/0.7.0/db9246f3322b26bc84afd8c3ec0250d5244bd244/bytes-0.7.0-sources.jar" kind="lib" path="/data/home/michael/.gradle/caches/modules-2/files-2.1/at.favre.lib/bytes/0.7.0/43aa72530438322e616384d1c16093a9131cb5f1/bytes-0.7.0.jar">
 		<attributes>
 			<attribute name="gradle_used_by_scope" value="main,test"/>
 		</attributes>

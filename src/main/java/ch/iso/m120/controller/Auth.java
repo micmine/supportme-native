@@ -3,6 +3,8 @@ package ch.iso.m120.controller;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import at.favre.lib.crypto.bcrypt.BCrypt;
 import ch.iso.m120.model.Chat;
 import ch.iso.m120.model.Person;
 import ch.iso.m120.model.PersonCredentials;
@@ -43,7 +45,8 @@ public final class Auth {
 				rs.close();
 				stmt.close();
 
-				if (password.equals(databasePassword)) {
+				BCrypt.Result result = BCrypt.verifyer().verify(password.toCharArray(), databasePassword);
+				if (result.verified) {
 					this.loggedIn = true;
 					this.setPerson(DatabaseEngine.getInstance().find(Person.class, id));
 					SceneManager.getInstance().load();
@@ -64,6 +67,7 @@ public final class Auth {
 		Person person = new Person(id, username, email);
 		DatabaseEngine.getInstance().save(person);
 
+		password = BCrypt.withDefaults().hashToString(12, password.toCharArray());
 		PersonCredentials credentials = new PersonCredentials(id, password);
 		DatabaseEngine.getInstance().save(credentials);
 
