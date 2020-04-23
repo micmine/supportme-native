@@ -19,7 +19,7 @@ These groups can have permission. Users can be in a chat. There should be predef
 ### Database
 install [docker](https://www.docker.com/) and setup a database like so
 ```bash
-docker run --name postgres-supportme-native -e POSTGRES_PASSWORD=pass -d postgres
+docker run --name postgres-supportme-native -p 5432:5432 -e POSTGRES_PASSWORD=pass -d postgres
 ```
 And start psql shell
 ```bash
